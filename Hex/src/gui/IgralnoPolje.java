@@ -96,9 +96,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		double skupnaDolzina = 2*Igra.N*a*Math.cos(Math.PI/6)+(Igra.N-1)*a*Math.cos(Math.PI/6);
 		double skupnaVisina = Igra.N *3.0*a/2.0 + a/2.0;
 		
-		koordinate[0] = (getWidth() - skupnaDolzina)/2.0 + (x-1) * xPremik + vrsticaPremik;
+		koordinate[0] = (getWidth() - skupnaDolzina)/2.0 + a*Math.cos(Math.PI/6) + (x-1) * xPremik + vrsticaPremik;
 
-		koordinate[1] = (getHeight() - skupnaVisina)/2.0 + (y-1)*yPremik;
+		koordinate[1] = (getHeight() - skupnaVisina)/2.0 + a + (y-1)*yPremik;
 		
 		return koordinate;
 		
