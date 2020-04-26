@@ -74,12 +74,12 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		tabela[0][3] = round(x + Math.cos(Math.PI/6)*a);
 		tabela[0][4] = round(x);
 		tabela[0][5] = round(x - Math.cos(Math.PI/6)*a);
-		tabela[1][0] = round(y + Math.sin(Math.PI/6)*a);
-		tabela[1][1] = round(y + a);
-		tabela[1][2] = round(y + Math.sin(Math.PI/6)*a);
-		tabela[1][3] = round(y - Math.sin(Math.PI/6)*a);
-		tabela[1][4] = round(y - a);
-		tabela[1][5] = round(y - Math.sin(Math.PI/6)*a);
+		tabela[1][0] = round(y - Math.sin(Math.PI/6)*a);
+		tabela[1][1] = round(y - a);
+		tabela[1][2] = round(y - Math.sin(Math.PI/6)*a);
+		tabela[1][3] = round(y + Math.sin(Math.PI/6)*a);
+		tabela[1][4] = round(y + a);
+		tabela[1][5] = round(y + Math.sin(Math.PI/6)*a);
 		
 		return tabela;	
 	}
@@ -116,18 +116,44 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			for (int x = 1; x <= Igra.N; x++) {
 				double[] tocka = premik(x, y);
 				
+				
 				int[][] tocke = oglisca(tocka[0], tocka[1]);
 				g2.drawPolygon(tocke[0], tocke[1], 6);
+				
+				if(y==1) {
+					g2.setColor(Color.RED);
+					g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH * 2)));
+					g2.drawLine(tocke[0][0], tocke[1][0], tocke[0][1], tocke[1][1]);
+					g2.drawLine(tocke[0][1], tocke[1][1], tocke[0][2], tocke[1][2]);
+				}
+				if(y==Igra.N) {
+					g2.setColor(Color.RED);
+					g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH * 2)));
+					g2.drawLine(tocke[0][3], tocke[1][3], tocke[0][4], tocke[1][4]);
+					g2.drawLine(tocke[0][4], tocke[1][4], tocke[0][5], tocke[1][5]);
+				}
+				if(x==1) {
+					g2.setColor(Color.BLUE);
+					g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH * 2)));
+					g2.drawLine(tocke[0][0], tocke[1][0], tocke[0][5], tocke[1][5]);
+					g2.drawLine(tocke[0][5], tocke[1][5], tocke[0][4], tocke[1][4]);
+				}
+				if(x==Igra.N) {
+					g2.setColor(Color.BLUE);
+					g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH * 2)));
+					g2.drawLine(tocke[0][1], tocke[1][1], tocke[0][2], tocke[1][2]);
+					g2.drawLine(tocke[0][2], tocke[1][2], tocke[0][3], tocke[1][3]);
+				}
+				g2.setColor(Color.BLACK);
+				g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 				
 				
 			}	
 		}
-		
-
-		
+				
 	}
 	
-	
+
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
