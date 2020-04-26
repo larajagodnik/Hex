@@ -12,9 +12,6 @@ import javax.swing.JPanel;
 
 import logika.Igra;
 
-//
-// treba je popravit zamik !
-//
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -26,8 +23,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(1200, 1200);
+		return new Dimension(1000, 1000);
 	}
+	
 	
 	//sirina crt
 	private final static double LINE_WIDTH = 0.08;
@@ -40,6 +38,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	 iz tega dobis a = sirina polja/(sqrt(3) * (N+(N-1)/2)+1) 
 	 visina vseh polj skupaj = (N+1)*3a/2 + a/2 -> a = visina*a/(3(N+1)+1)
 	**/
+	
+	
+	
 	private double stranica() {
 		double stranica1 = getWidth()*0.8 / (Math.sqrt(3) * (Igra.N + (Igra.N -1)/2) + 1);
 		double stranica2 = getHeight()*0.8 * 2 / (3*Igra.N + 1);
@@ -85,7 +86,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		double xPremik = 2 * Math.cos(Math.PI/6)*a;
 		double yPremik = a * 3/2; // y se premakne za cel a in se polovica
 		//vrstica se za y=2 in naprej usakic premakne za a+cos(30) vec
-		double vrsticaPremik = (y-1) * a * Math.acos(Math.PI/6);
+		double vrsticaPremik = (y-1) * a * Math.cos(Math.PI/6);
 		
 		double[] koordinate = new double[2];
 		// koordinata za x = 1 bo na sirina / (N+(N-1)/2 +1)
@@ -112,7 +113,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			for (int x = 1; x <= Igra.N; x++) {
 				double[] tocka = premik(x, y);
 				
-				//sredisca[x][y] = new double[]{round(tocka[0]), round(tocka[1])};
 				int[][] tocke = oglisca(tocka[0], tocka[1]);
 				g2.drawPolygon(tocke[0], tocke[1], 6);
 				
