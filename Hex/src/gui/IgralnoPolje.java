@@ -12,6 +12,9 @@ import javax.swing.JPanel;
 
 import logika.Igra;
 
+//
+// Ni se cisto na sredini
+//
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -23,7 +26,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(1000, 1000);
+		return new Dimension(900, 800);
 	}
 	
 	
@@ -42,8 +45,8 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	
 	private double stranica() {
-		double stranica1 = getWidth()*0.8 / (Math.sqrt(3) * (Igra.N + (Igra.N -1)/2) + 1);
-		double stranica2 = getHeight()*0.8 * 2 / (3*Igra.N + 1);
+		double stranica1 = getWidth()*0.9 / (Math.sqrt(3) * (Igra.N + (Igra.N -1)/2));
+		double stranica2 = getHeight()*0.9 / (3*Igra.N/2 + 1/2);
 		return Math.min(stranica1, stranica2);
 	}
 	/**
@@ -89,13 +92,13 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		double vrsticaPremik = (y-1) * a * Math.cos(Math.PI/6);
 		
 		double[] koordinate = new double[2];
-		// koordinata za x = 1 bo na sirina / (N+(N-1)/2 +1)
-		// x za 2 in naprej se premakne za (x-1)*premikx
-		// ko se premakne se y se premakne tudi za vrstico
-		koordinate[0] = getWidth()/(Igra.N+(Igra.N-1)/2 + 1) + (x-1)*xPremik + vrsticaPremik;
-		// y zacne na visina (N+1); od 2 naprej se premika za premik y 
-		koordinate[1] = getHeight()/(Igra.N+1) + (y-1)*yPremik;
+
+		double skupnaDolzina = 2*Igra.N*a*Math.cos(Math.PI/6)+(Igra.N-1)*a*Math.cos(Math.PI/6);
+		double skupnaVisina = Igra.N *3.0*a/2.0 + a/2.0;
 		
+		koordinate[0] = (getWidth() - skupnaDolzina)/2.0 + (x-1) * xPremik + vrsticaPremik;
+
+		koordinate[1] = (getHeight() - skupnaVisina)/2.0 + (y-1)*yPremik;
 		
 		return koordinate;
 		
