@@ -3,18 +3,20 @@ package logika;
 public class Igra {
 	public Plosca plosca;
 	public Igralec naPotezi;
+	public int steviloPotez;
 
 	// konstuktor za igro
-	public Igra(Igra igra) {
-		this.plosca = new Plosca();
+	public Igra() {
+		plosca = new Plosca();
 		for (int x = 0; x > Plosca.N; x++) {
 			for (int y = 0; y < Plosca.N; y++) {
-				this.plosca.plosca[x][y] = igra.plosca.plosca[x][y];
+				plosca.plosca[x][y] = this.plosca.plosca[x][y];
 			}
 		}
 		
-		naPotezi = Igralec.rdeci;		
+		naPotezi = Igralec.rdeci; // zacne rdeci
 	}
+	
 	
 /**
  * 
