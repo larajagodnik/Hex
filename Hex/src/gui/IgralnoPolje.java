@@ -10,11 +10,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-import logika.Igra;
+import logika.Plosca;
 
-//
-// Ni se cisto na sredini
-//
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -34,7 +31,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	private final static double LINE_WIDTH = 0.08;
 	
 	/**
-	 profesor: return Math.min(getWidth(), getHeight()) / Igra.N;
+	 profesor: return Math.min(getWidth(), getHeight()) / Plosca.N;
 	 nocemo da je cisto do roba zato getWidth()* 0.8
 	 imamo N sestkotnikov, po zamiku je njihova sirina = N+(N-1)/2
 	 in dodat mores se enega
@@ -45,8 +42,8 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	
 	private double stranica() {
-		double stranica1 = getWidth()*0.9 / (Math.sqrt(3) * (Igra.N + (Igra.N -1)/2));
-		double stranica2 = getHeight()*0.9 / (3*Igra.N/2 + 1/2);
+		double stranica1 = getWidth()*0.9 / (Math.sqrt(3) * (Plosca.N + (Plosca.N -1)/2));
+		double stranica2 = getHeight()*0.9 / (3*Plosca.N/2 + 1/2);
 		return Math.min(stranica1, stranica2);
 	}
 	/**
@@ -88,13 +85,13 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		double a = stranica();
 		double xPremik = 2 * Math.cos(Math.PI/6)*a;
 		double yPremik = a * 3/2; // y se premakne za cel a in se polovica
-		//vrstica se za y=2 in naprej usakic premakne za a+cos(30) vec
+		//vrstica se za y=2 in naprej usakic premakne za a+cos(30) 
 		double vrsticaPremik = (y-1) * a * Math.cos(Math.PI/6);
 		
 		double[] koordinate = new double[2];
 
-		double skupnaDolzina = 2*Igra.N*a*Math.cos(Math.PI/6)+(Igra.N-1)*a*Math.cos(Math.PI/6);
-		double skupnaVisina = Igra.N *3.0*a/2.0 + a/2.0;
+		double skupnaDolzina = 2*Plosca.N*a*Math.cos(Math.PI/6)+(Plosca.N-1)*a*Math.cos(Math.PI/6);
+		double skupnaVisina = Plosca.N *3.0*a/2.0 + a/2.0;
 		
 		koordinate[0] = (getWidth() - skupnaDolzina)/2.0 + a*Math.cos(Math.PI/6) + (x-1) * xPremik + vrsticaPremik;
 
@@ -112,8 +109,8 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		
-		for(int y = 1; y <= Igra.N; y++) {
-			for (int x = 1; x <= Igra.N; x++) {
+		for(int y = 1; y <= Plosca.N; y++) {
+			for (int x = 1; x <= Plosca.N; x++) {
 				double[] tocka = premik(x, y);
 				
 				
@@ -126,7 +123,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 					g2.drawLine(tocke[0][0], tocke[1][0], tocke[0][1], tocke[1][1]);
 					g2.drawLine(tocke[0][1], tocke[1][1], tocke[0][2], tocke[1][2]);
 				}
-				if(y==Igra.N) {
+				if(y==Plosca.N) {
 					g2.setColor(Color.RED);
 					g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH * 2)));
 					g2.drawLine(tocke[0][3], tocke[1][3], tocke[0][4], tocke[1][4]);
@@ -138,7 +135,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 					g2.drawLine(tocke[0][0], tocke[1][0], tocke[0][5], tocke[1][5]);
 					g2.drawLine(tocke[0][5], tocke[1][5], tocke[0][4], tocke[1][4]);
 				}
-				if(x==Igra.N) {
+				if(x==Plosca.N) {
 					g2.setColor(Color.BLUE);
 					g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH * 2)));
 					g2.drawLine(tocke[0][1], tocke[1][1], tocke[0][2], tocke[1][2]);
