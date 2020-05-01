@@ -1,4 +1,4 @@
-package logika;
+package koordinati;
 
 public class Koordinati {
 	private int x;
@@ -8,17 +8,18 @@ public class Koordinati {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public int getX() { 
 		return x; 
 	}
+
 	public int getY() {
 		return y;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "(" + x + ", " + y + ")";
+		return "Koordinati [x=" + x + ", y=" + y + "]";
 	}
 	
 	@Override 
@@ -34,5 +35,4 @@ public class Koordinati {
 		int x = this.x ; int y = this.y;
 		return (x + y) * (x + y + 1) / 2 + y;
 	}
-
 }
