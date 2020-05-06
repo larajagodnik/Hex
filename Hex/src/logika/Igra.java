@@ -1,9 +1,15 @@
 package logika;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import koordinati.Koordinati;
+
 public class Igra {
 	public Plosca plosca;
 	public Igralec naPotezi;
-	public int steviloPotez;
+	public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
 
 	// konstuktor za igro
 	public Igra() {
@@ -18,23 +24,68 @@ public class Igra {
 	}
 	
 	
-/**
- * 
- * od profesorja malo spremenjeno
- * 
 
 	//seznam moznih potez
-	public List<Koordinati> poteze() {
-		LinkedList<Koordinati> ps = new LinkedList<Koordinati>();
+	public List<Koordinati> moznePoteze() {
+		LinkedList<Koordinati> poteze = new LinkedList<Koordinati>();
 		for (int i = 0; i < Plosca.N; i++) {
 			for (int j = 0; j < Plosca.N; j++) {
 				if (plosca.plosca[i][j] == Polje.prazno) {
-					ps.add(new Koordinati(i, j));
+					poteze.add(new Koordinati(i, j));
 				}
 			}
 		}
-		return ps;
+		return poteze;
+	}
+	
+	
+	public boolean odigraj(Koordinati p) {
+		if (plosca.plosca[p.getX()][p.getY()] == Polje.prazno) {
+			plosca.plosca[p.getX()][p.getY()] = naPotezi.getPolje();
+			naPotezi = naPotezi.nasprotnik();
+			poteze.add(p);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public void razveljavi() {
+		Koordinati zadnjaPoteza = poteze.get(poteze.size()-1);
+		plosca.plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.prazno;
+		poteze.remove(poteze.size()-1);
+		naPotezi = naPotezi.nasprotnik();
+	}
+	
+/**	
+ * da je crta neke barve povezana moramo preverjati 6 smeri
+ * z bfs-jem
+ * 
+**/	
+/**	
+	public boolean obstajaZamagovalec(Koordinati p) {
+		
+		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
+		for (int i=0; i<Plosca.N; i++) {
+			for (int j=0; j<Plosca.N; j++) {
+				visited[i][j] = false;
+			}
+		}
+		
+		Polje barva = plosca.plosca[p.getX()][p.getY()];
+		
+		LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
+		queue.add(p);
+		visited[p.getX()][p.getY()] = true;
+		while(!queue.isEmpty()) {
+			Koordinati current = queue.pop();
+			visited[current.getX()][current.getY()] = true;
+			
+		}
 		
 	}
-**/	
+		
+**/
+	
 }
