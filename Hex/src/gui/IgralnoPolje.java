@@ -101,6 +101,11 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		
 	}
 	
+	//javno definiramo sredisca heksagonov
+	public static double[][] srediscax = new double[11][11];
+	public static double[][] srediscay = new double[11][11];
+
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
@@ -114,6 +119,10 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				double[] tocka = premik(x, y);
 				
 				
+				//shranimo središèa za kasneje, za barvanje ob kliku
+				srediscax[x-1][y-1] = tocka[0];
+				srediscay[x-1][y-1] = tocka[1];
+			 	
 				int[][] tocke = oglisca(tocka[0], tocka[1]);
 				g2.drawPolygon(tocke[0], tocke[1], 6);
 				
@@ -150,36 +159,56 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				
 	}
 	
+	//poišèemo najbližje središèe torej najbližji heksagon
+	private int[] indexMin(int klikX, int klikY){
+		int[] minim = new int[3];
+		minim[0] = 0;
+		minim[1] = 0;
+		minim[2] = 0;
+		
+		double absX = Math.pow(klikX-srediscax[0][0], 2);
+		double absY = Math.pow(klikY-srediscay[0][0], 2);
+		
+		for(int y = 0; y < Plosca.N; y++) {
+			for (int x = 0; x < Plosca.N; x++) {
+				//iskanje najmanjše dolžine v 2D
+				double kandidatX = Math.pow(klikX-srediscax[x][y], 2);
+				double kandidatY = Math.pow(klikY-srediscay[x][y], 2);
+				//shranimo indeks èe razdalja do kandidata manjša
+				//nato zamenjamo kandidata s testom (absX oziroma absY)
+				double razdalja = Math.sqrt(kandidatX+kandidatY);
+				if(razdalja < Math.sqrt(absX+absY)) {
+					absX = kandidatX;
+					absY = kandidatY;
+					minim[0] = x;
+					minim[1] = y;
+					minim[2] = round(razdalja);
+				}
+			}
+		}
+		return minim;
+	}
 
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		Graphics g = getGraphics();
+		g.setColor(Color.BLACK);
+		//dobim pozicijo klika
+		int klikX = e.getX();
+		int klikY = e.getY();
+		//poiscem indeks najblizjega sredisca
+		int[] minim = indexMin(klikX, klikY);	
+		//sestavim poligon na tem središèu ki ga nato narišem
+		if (minim[2] < stranica()) {
+			int[][] poligon = oglisca(srediscax[minim[0]][minim[1]], srediscay[minim[0]][minim[1]]);
+			g.fillPolygon(poligon[0], poligon[1], 6);
+		}
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent arg0) {}
+	public void mousePressed(MouseEvent arg0) {}
+	public void mouseReleased(MouseEvent arg0) {}
 
 }
