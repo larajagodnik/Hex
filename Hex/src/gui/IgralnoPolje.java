@@ -102,16 +102,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	}
 	
 	//definiramo sredisca heksagonov
-	//ker jih bomo dodali ko gradimo igralno polje (dvojni for loop) bodo narejena z 2 matrikama 11x11
+	//ker jih bomo dodali ko gradimo igralno polje (dvojni for loop) bodo narejena z dvema matrikama 11x11
 	public static double[][] srediscax = new double[11][11];
 	public static double[][] srediscay = new double[11][11];
-	
-	//ker se bomo po njih sprehajali s stevcem, ki se poveca z novim pobarvanim heksagonom imamo 11**2
-	public static double[][] pobarvani = new double[(int) Math.pow(11, 2)][2];
-	public static int stevec = 0;
-	
-	//igranje z barvami
-	public Color color = Color.RED;
 	
 	//narisemo obmocje igre, to je 11x11 heksagonov
 	protected void paintComponent(Graphics g) {
@@ -131,7 +124,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				//imamo 2 matriki 11x11 kjer za vsak heksagon shranimo pozicijo po x in y
 				srediscax[x-1][y-1] = tocka[0];
 				srediscay[x-1][y-1] = tocka[1];
-			 	
+				
 				int[][] tocke = oglisca(tocka[0], tocka[1]);
 				g2.drawPolygon(tocke[0], tocke[1], 6);
 				
@@ -165,18 +158,17 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				
 			}	
 		}
-				
 	}
 	
-	//poiscemo najblizje sredisce torej najblizji heksagon in shrani indeks najblizjega sredisca, ter razdaljos
+	//poiscemo najblizje sredisce torej najblizji heksagon in shrani indeks najblizjega sredisca, ter razdaljo
 	private int[] sredisce(int klikX, int klikY){
 		int[] minim = new int[3];
 		minim[0] = 0;
 		minim[1] = 0;
 		minim[2] = 0;
 		
-		double absX = Math.pow(klikX-srediscax[0][0], 2);
-		double absY = Math.pow(klikY-srediscay[0][0], 2);
+		double absX = 10000;
+		double absY = 10000;
 		
 		for(int y = 0; y < Plosca.N; y++) {
 			for (int x = 0; x < Plosca.N; x++) {
@@ -198,30 +190,38 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		return minim;
 	}
 
-	protected void pobarvaj(Graphics g, int[] minim, int klikX, int klikY) {
-		//da nismo kliknili izven igralnega polja
-		if (minim[2] < stranica()) {
-			//nas poligon je dolocen z oglisci okoli sredsica
-			int[][] poligon = oglisca(srediscax[minim[0]][minim[1]], srediscay[minim[0]][minim[1]]); 
-			g.fillPolygon(poligon[0], poligon[1], 6);
-			//dodamo sredisce poligona ki smo ga pobarvali med pobarvane
-			pobarvani[stevec][0] = minim[0];
-			pobarvani[stevec][1] = minim[1];
-			//stevilo pobarvanih se poveca
-			stevec++;
-			//test menjave barv
-			if(color == Color.RED) {color = Color.BLUE;}
-			else {color = Color.RED;}
-		}
-	}
 	
+	//ker se bomo po njih sprehajali s stevcem, ki se poveca z novim pobarvanim heksagonom imamo 11**2
+	public static double[][] pobarvani = new double[(int) Math.pow(11, 2)][2];
+	public static int stevec = 1;
+	public static boolean prvi = false;
+	
+	
+	//igranje z barvami
+	public Color color = Color.RED;
+	
+	protected void pobarvaj(Graphics g, int[] minim, int klikX, int klikY) {
+		//nas poligon je dolocen z oglisci okoli sredsica
+		int[][] poligon = oglisca(srediscax[minim[0]][minim[1]], srediscay[minim[0]][minim[1]]);
+		g.fillPolygon(poligon[0], poligon[1], 6);
+		
+		//dodamo sredisce poligona ki smo ga pobarvali med pobarvane
+		pobarvani[stevec][0] = minim[0];
+		pobarvani[stevec][1] = minim[1];
+		
+		//stevilo pobarvanih se poveca
+		stevec++;
+		
+		//test menjave barve
+		if(color == Color.RED) {color = Color.BLUE;}
+		else {color = Color.RED;}
+	}
 
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Graphics g = getGraphics();
 		g.setColor(color);
-		
 		//dobim pozicijo klika
 		int klikX = e.getX();
 		int klikY = e.getY();
@@ -229,14 +229,28 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		//poiscem indeks najblizjega sredisca
 		int[] minim = sredisce(klikX, klikY);
 		
-		//preverim če je slučajno že pobarvan
-		boolean pobarvan = false;
-		for(int i = 0; i <= stevec; i++) {
-			if(pobarvani[i][0] == minim[0] && pobarvani [i][1] == minim[1]) {pobarvan = true;}
+		//da nismo kliknili izven igralnega polja
+		if (minim[2] < stranica()) {
+			//posebej obravnavamo prvega ker ima pobarvani začetno vrednost 0,0
+			if (minim[0] == 0 && minim[1] == 0) {
+				if(prvi == false) {
+					int[][] poligon = oglisca(srediscax[0][0], srediscay[0][0]);
+					g.fillPolygon(poligon[0], poligon[1], 6);
+					prvi = true;
+					if(color == Color.RED) {color = Color.BLUE;}
+					else {color = Color.RED;}
+				}
+			}
+			
+			//preverim ostale, če so slučajno že pobarvani
+			boolean pobarvan = false;
+			for(int i = 1; i <= stevec; i++) {
+				if(pobarvani[i][0] == minim[0] && pobarvani [i][1] == minim[1]) {pobarvan = true;}
+			}
+			
+			//pobarvamo poligon
+			if(pobarvan == false) {pobarvaj(g, minim, klikX, klikY);}
 		}
-		
-		//pobarvamo poligon
-		if(pobarvan == false) {pobarvaj(g, minim, klikX, klikY);}
 	}
 
 	public void mouseEntered(MouseEvent arg0) {}
