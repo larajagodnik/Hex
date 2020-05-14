@@ -183,7 +183,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				//iskanje najmanjse dolzine v 2D
 				double kandidatX = Math.pow(klikX-srediscax[x][y], 2);
 				double kandidatY = Math.pow(klikY-srediscay[x][y], 2);
-				//shranimo indeks ce razdalja do kandidata manjša
+				//shranimo indeks ce razdalja do kandidata manjÅ¡a
 				//nato zamenjamo kandidata s testiranjem (absX oziroma absY)
 				double razdalja = Math.sqrt(kandidatX+kandidatY);
 				if(razdalja < Math.sqrt(absX+absY)) {
@@ -229,7 +229,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		//poiscem indeks najblizjega sredisca
 		int[] minim = sredisce(klikX, klikY);
 		
-		//preverim če je slučajno že pobarvan
+		//preverim Ä�e je sluÄ�ajno Å¾e pobarvan
 		boolean pobarvan = false;
 		for(int i = 0; i <= stevec; i++) {
 			if(pobarvani[i][0] == minim[0] && pobarvani [i][1] == minim[1]) {pobarvan = true;}

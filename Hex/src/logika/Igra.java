@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import koordinati.Koordinati;
+import splosno.Koordinati;
 
 public class Igra {
 	public Plosca plosca;
