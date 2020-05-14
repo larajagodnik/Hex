@@ -59,12 +59,17 @@ public class Igra {
 	}
 	
 /**	
- * da je crta neke barve povezana moramo preverjati 6 smeri
+ * vrne nam barvo zmagovalca ali null ce zmagovalca se ni
  * z bfs-jem
- * 
+ * visited nastavis na false, nato vsa polja ki so ob robu in so rdeca nastavis na true
+ * in ta polja dodas v vrsto
+ * dokler ni prazna vrsta, iz vrste das polje, ce je to polje na drugi strani (N-1) potem koncas
+ * sicer umes gledas sosede (6-sosednost), cese niso obiskani ali so rdeci
+ * smeri= { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} }
+ * ce se ni obiskan, potem polje das v vrsto in v visited
 **/	
-/**	
-	public boolean obstajaZamagovalec(Koordinati p) {
+	
+	public Igralec zamagovalec(Igralec igralec) {
 		
 		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
 		for (int i=0; i<Plosca.N; i++) {
@@ -73,19 +78,66 @@ public class Igra {
 			}
 		}
 		
-		Polje barva = plosca.plosca[p.getX()][p.getY()];
-		
 		LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
-		queue.add(p);
-		visited[p.getX()][p.getY()] = true;
-		while(!queue.isEmpty()) {
-			Koordinati current = queue.pop();
-			visited[current.getX()][current.getY()] = true;
-			
+		
+		if (igralec == Igralec.rdeci) {
+			for (int i=0; i<Plosca.N; i++) {
+				if (plosca.plosca[i][0] == Polje.rdece) {
+					queue.add(new Koordinati(i, 0));
+					visited[i][0] = true;
+				}
+			}
+		
+			while(!queue.isEmpty()) {
+				Koordinati polje = queue.pop();
+				int x = polje.getX();
+				int y = polje.getY();
+				
+				if (y == Plosca.N -1) {
+					return Igralec.rdeci;
+				}
+				
+				int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
+				for (int j=0; j<smeri.length; j++) {
+					if (plosca.plosca[x + smeri[j][0]][y + smeri[j][1]] == Polje.rdece && !visited[x + smeri[j][0]][y + smeri[j][1]]) {
+						queue.add(new Koordinati(x + smeri[j][0], y + smeri[j][1]));
+						visited[x + smeri[j][0]][y + smeri[j][1]] = true;
+					}
+				}
+			}
+			return null;
 		}
 		
-	}
+		else {
+			for (int i=0; i<Plosca.N; i++) {
+				if (plosca.plosca[0][i] == Polje.modro) {
+					queue.add(new Koordinati(0, i));
+					visited[0][i] = true;
+				}
+			}
 		
-**/
-	
+			while(!queue.isEmpty()) {
+				Koordinati polje = queue.pop();
+				int x = polje.getX();
+				int y = polje.getY();
+				
+				if (x == Plosca.N -1) {
+					return Igralec.modri;
+				}
+				
+				int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
+				for (int j=0; j<smeri.length; j++) {
+					if (plosca.plosca[x + smeri[j][0]][y + smeri[j][1]] == Polje.modro && !visited[x + smeri[j][0]][y + smeri[j][1]]){
+						queue.add(new Koordinati(x + smeri[j][0], y + smeri[j][1]));
+						visited[x + smeri[j][0]][y + smeri[j][1]] = true;
+					}
+				
+				}
+			}
+			return null;
+		
+		}
+		
+
+	}
 }
