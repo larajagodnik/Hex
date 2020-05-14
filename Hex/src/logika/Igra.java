@@ -69,7 +69,7 @@ public class Igra {
  * ce se ni obiskan, potem polje das v vrsto in v visited
 **/	
 	
-	public Igralec zamagovalec(Igralec igralec) {
+	public Igralec zmagovalec(Igralec igralec) {
 		
 		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
 		for (int i=0; i<Plosca.N; i++) {
@@ -140,4 +140,34 @@ public class Igra {
 		
 
 	}
+	
+	public Stanje stanje() {
+		// Ali imamo zmagovalca?
+		Igralec igralec = naPotezi;
+		Igralec zmagovalec = zmagovalec(igralec);
+		if (zmagovalec == Igralec.rdeci) {
+			return Stanje.zmaga_rdeci;
+		}
+		else if (zmagovalec == Igralec.modri) {
+			return Stanje.zmaga_modri;
+		}
+		
+		// ce je kaksno polje prazno je igra v teku
+		for (int i=0; i<Plosca.N; i++) {
+			for (int j=0; j<Plosca.N; j++) {
+				if (plosca.plosca[i][j] == Polje.prazno) {
+					return Stanje.v_teku;
+				}
+			}
+		}
+		
+		// ce ni nobenega polja vec zmaga tisti ki je postaviu zadni zeton
+		if (igralec == Igralec.rdeci) {
+			return Stanje.zmaga_rdeci;
+		}
+		else {
+			return Stanje.zmaga_rdeci;
+		}		
+	}
+	
 }
