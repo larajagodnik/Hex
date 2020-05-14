@@ -16,6 +16,7 @@ import logika.Plosca;
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
 	
+	// konstruktor za igralno polje
 	public IgralnoPolje() {
 		setBackground(Color.WHITE);
 		this.addMouseListener(this);
@@ -40,12 +41,17 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	**/
 	
 	
-	
+	// kako dolga bo stranica glede na velikost polja
 	private double stranica() {
 		double stranica1 = getWidth()*0.9 / (Math.sqrt(3) * (Plosca.N + (Plosca.N -1)/2));
 		double stranica2 = getHeight()*0.9 / (3*Plosca.N/2 + 1/2);
 		return Math.min(stranica1, stranica2);
 	}
+	
+	public static int round(double x) {
+		return (int)(x + 0.5);
+	}
+	
 	/**
 	 metoda, ki nam vrne oglisca sestkotnika, glede na sredisce sestkotnika (x, y),
 	 (po tem lahko ta oglisca povezemo s Polygon)
@@ -58,9 +64,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	 y|0|1|2|3|4|5|
 	   ... 
 	**/
-	public static int round(double x) {
-		return (int)(x + 0.5);
-	}
 		
 	private int[][] oglisca(double x, double y) {
 		double a = stranica();
@@ -81,6 +84,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		return tabela;	
 	}
 	
+	// premik za x, y in vrstico
+	// risali bomo najprej prvo vrstico kjer se sredisce premika za x, sredisce vrstic od 2 naprej se zamakne za nek y in x
+	// dobimo koordniate sredisc
 	private double[] premik(int x, int y) {
 		double a = stranica();
 		double xPremik = 2 * Math.cos(Math.PI/6)*a;
@@ -125,6 +131,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				srediscax[x-1][y-1] = tocka[0];
 				srediscay[x-1][y-1] = tocka[1];
 				
+				// barvanje robov igralne plosce
 				int[][] tocke = oglisca(tocka[0], tocka[1]);
 				g2.drawPolygon(tocke[0], tocke[1], 6);
 				

@@ -38,6 +38,7 @@ public class Igra {
 		return poteze;
 	}
 	
+	// ali je poteza veljavna
 	public boolean veljavnaPoteza(int x, int y) {
 		if (x < 0 || x >= Plosca.N || y < 0 || y >= Plosca.N) {
 			return false;
@@ -45,6 +46,7 @@ public class Igra {
 		return true;
 	}
 	
+	// ce je mozno odigrati potezo se ta doda v seznam poteze, na vrsti pa bo nasprotnik
 	public boolean odigraj(Koordinati p) {
 		int x = p.getX();
 		int y = p.getY();
@@ -62,6 +64,7 @@ public class Igra {
 		return false;	
 	}
 	
+	// razveljavi zadnjo potezo, in zamenja nasprotnika da bo spet isti kot pred razveljavitvijo
 	public void razveljavi() {
 		Koordinati zadnjaPoteza = poteze.get(poteze.size()-1);
 		plosca.plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.prazno;
@@ -71,6 +74,7 @@ public class Igra {
 	
 /**	
  * vrne nam barvo zmagovalca ali null ce zmagovalca se ni
+ * parameter igralec je igralec, ki je trenutno na potezi
  * z bfs-jem
  * visited nastavis na false, nato vsa polja ki so ob robu in so rdeca nastavis na true
  * in ta polja dodas v vrsto
@@ -112,7 +116,7 @@ public class Igra {
 				for (int j=0; j<smeri.length; j++) {
 					int sosedx = x + smeri[j][0];
 					int sosedy = y + smeri[j][1];
-					if (veljavnaPoteza(sosedx, sosedy)) {
+					if (veljavnaPoteza(sosedx, sosedy)) {          // nisem sigurna ce rabi to preverjat
 						if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
 							queue.add(new Koordinati(sosedx, sosedy));
 							visited[sosedx][sosedy] = true;
@@ -159,6 +163,7 @@ public class Igra {
 
 	}
 	
+	// vrne sanje igre
 	public Stanje stanje() {
 		// Ali imamo zmagovalca?
 		Igralec igralec = naPotezi;
