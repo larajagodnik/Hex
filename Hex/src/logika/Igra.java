@@ -84,6 +84,14 @@ public class Igra {
  * ce se ni obiskan, potem polje das v vrsto in v visited
 **/	
 	
+	
+/**
+ * kako najti zmagovalno vrsto
+ * vrsto isces za v sako zacetno vozlisce posebej rdec ce je y=0 in moder ce je x=0
+ * za vsako vozlisce si shranis starsa iz kje je prisel in potem jo za nazaj konstruiras
+ * ce obstaja zmagovalna vrsta potem imamo zmagovalca in to je tisti, ki je bil ravno na vrsti
+ */
+	
 	public Igralec zmagovalec(Igralec igralec) {
 		
 		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
@@ -109,6 +117,9 @@ public class Igra {
 				int y = polje.getY();
 				
 				if (y == Plosca.N -1) {
+					List<Koordinati> zmagovalna_vrsta = new ArrayList<>();
+					zmagovalna_vrsta.add(polje);
+					
 					return Igralec.rdeci;
 				}
 				
