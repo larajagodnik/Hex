@@ -38,17 +38,28 @@ public class Igra {
 		return poteze;
 	}
 	
-	
-	public boolean odigraj(Koordinati p) {
-		if (plosca.plosca[p.getX()][p.getY()] == Polje.prazno) {
-			plosca.plosca[p.getX()][p.getY()] = naPotezi.getPolje();
-			naPotezi = naPotezi.nasprotnik();
-			poteze.add(p);
-			return true;
-		}
-		else {
+	public boolean veljavnaPoteza(int x, int y) {
+		if (x < 0 || x >= Plosca.N || y < 0 || y >= Plosca.N) {
 			return false;
 		}
+		return true;
+	}
+	
+	public boolean odigraj(Koordinati p) {
+		int x = p.getX();
+		int y = p.getY();
+		if (veljavnaPoteza(x, y)) {  // a rabmo to preverjat?
+			if (plosca.plosca[x][y] == Polje.prazno) {
+				plosca.plosca[x][y] = naPotezi.getPolje();
+				naPotezi = naPotezi.nasprotnik();
+				poteze.add(p);
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		return false;	
 	}
 	
 	public void razveljavi() {
@@ -99,9 +110,13 @@ public class Igra {
 				
 				int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
 				for (int j=0; j<smeri.length; j++) {
-					if (plosca.plosca[x + smeri[j][0]][y + smeri[j][1]] == Polje.rdece && !visited[x + smeri[j][0]][y + smeri[j][1]]) {
-						queue.add(new Koordinati(x + smeri[j][0], y + smeri[j][1]));
-						visited[x + smeri[j][0]][y + smeri[j][1]] = true;
+					int sosedx = x + smeri[j][0];
+					int sosedy = y + smeri[j][1];
+					if (veljavnaPoteza(sosedx, sosedy)) {
+						if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
+							queue.add(new Koordinati(sosedx, sosedy));
+							visited[sosedx][sosedy] = true;
+						}		
 					}
 				}
 			}
@@ -127,11 +142,14 @@ public class Igra {
 				
 				int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
 				for (int j=0; j<smeri.length; j++) {
-					if (plosca.plosca[x + smeri[j][0]][y + smeri[j][1]] == Polje.modro && !visited[x + smeri[j][0]][y + smeri[j][1]]){
-						queue.add(new Koordinati(x + smeri[j][0], y + smeri[j][1]));
-						visited[x + smeri[j][0]][y + smeri[j][1]] = true;
+					int sosedx = x + smeri[j][0];
+					int sosedy = y + smeri[j][1];
+					if (veljavnaPoteza(sosedx, sosedy)) {
+						if (plosca.plosca[sosedx][sosedy] == Polje.modro && !visited[sosedx][sosedy]){
+							queue.add(new Koordinati(sosedx, sosedy));
+							visited[sosedx][sosedy] = true;
+						}
 					}
-				
 				}
 			}
 			return null;
