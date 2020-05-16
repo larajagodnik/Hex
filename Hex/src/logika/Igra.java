@@ -24,6 +24,32 @@ public class Igra {
 		naPotezi = Igralec.rdeci; // zacne rdeci
 	}
 	
+	/**
+	 * Kopija igre
+	 */
+	public Igra(Igra igra) {
+		this.plosca = new Plosca();
+		for (int x = 0; x > Plosca.N; x++) {
+			for (int y = 0; y < Plosca.N; y++) {
+				this.plosca.plosca[x][y] = igra.plosca.plosca[x][y];
+			}
+		}
+		this.naPotezi = igra.naPotezi;
+	}
+	
+	/**
+	 * @return igralna plosca
+	 */
+	public Polje[][] getPlosca () {
+		return plosca.plosca;
+	}
+	
+	/**
+	 * @return igralec, ki je na potezi
+	 */
+	public Igralec naPotezi() {
+		return naPotezi;
+	}
 	
 
 	//seznam moznih potez

@@ -1,5 +1,9 @@
 package logika;
 
+/**
+ * Možni igralci.
+ */
+
 public enum Igralec {
 	rdeci, modri;
 	

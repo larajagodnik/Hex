@@ -1,11 +1,11 @@
 package gui;
 
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+
+import vodja.Vodja;
 
 @SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame{
@@ -29,5 +29,28 @@ public class GlavnoOkno extends JFrame{
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
+	}
+	
+	public void osveziGUI() {
+		if (Vodja.igra == null) {
+			//status.setText("Igra ni v teku.");
+		}
+		else {
+			switch(Vodja.igra.stanje()) {
+			case v_teku: 
+				//status.setText("Na potezi je " + Vodja.igra.naPotezi() + 
+				//		" - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime()); 
+				break;
+			case zmaga_rdeci: 
+				//status.setText("Zmagal je RDEC - " + 
+				//		Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime()); 
+				break;
+			case zmaga_modri: 
+				//status.setText("Zmagal je MODER - " + 
+				//		Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+				break;
+			}
+		}
+		polje.repaint();
 	}
 }
