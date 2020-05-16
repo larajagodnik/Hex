@@ -33,19 +33,23 @@ public class GlavnoOkno extends JFrame{
 	
 	public void osveziGUI() {
 		if (Vodja.igra == null) {
+			System.out.println("Igra ni v teku");
 			//status.setText("Igra ni v teku.");
 		}
 		else {
 			switch(Vodja.igra.stanje()) {
 			case v_teku: 
+				System.out.println("Na potezi je " + Vodja.igra.naPotezi() +  " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				//status.setText("Na potezi je " + Vodja.igra.naPotezi() + 
 				//		" - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime()); 
 				break;
 			case zmaga_rdeci: 
+				System.out.println("Zmagal je RDEC - " + Vodja.igra.naPotezi() +  " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				//status.setText("Zmagal je RDEC - " + 
 				//		Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime()); 
 				break;
 			case zmaga_modri: 
+				System.out.println("Zmagal je MODER - " + Vodja.igra.naPotezi() +  " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				//status.setText("Zmagal je MODER - " + 
 				//		Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 				break;
