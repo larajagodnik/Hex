@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 import logika.Plosca;
+import vodja.Vodja;
+import splosno.Koordinati;
 
 
 @SuppressWarnings("serial")
@@ -229,6 +231,8 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		Graphics g = getGraphics();
 		g.setColor(color);
+		//if (Vodja.clovekNaVrsti) {
+		
 		//dobim pozicijo klika
 		int klikX = e.getX();
 		int klikY = e.getY();
@@ -257,8 +261,14 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			}
 			
 			//pobarvamo poligon
-			if(pobarvan == false) {pobarvaj(g, minim, klikX, klikY);}
+			if(pobarvan == false) {
+				pobarvaj(g, minim, klikX, klikY);
+				Vodja.igrajClovekovoPotezo(new Koordinati(minim[0], minim[1]));
+				}
 		}
+		
+		//}
+		
 	}
 
 	public void mouseEntered(MouseEvent arg0) {}

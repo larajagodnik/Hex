@@ -30,6 +30,7 @@ public class Vodja {
 			return; // odhajamo iz metode igramo
 		case v_teku: 
 			Igralec igralec = igra.naPotezi();
+			
 			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 			switch (vrstaNaPotezi) {
 			case C: 
@@ -38,11 +39,14 @@ public class Vodja {
 			case R:
 				igrajRacunalnikovoPotezo ();
 				break;
+			
 			}
+			
 		}
 	}
 	
 	public static void igrajClovekovoPotezo(Koordinati poteza) {
+		System.out.println(poteza);
 		if (igra.odigraj(poteza)) clovekNaVrsti = false;
 		igramo();
 	}
