@@ -22,10 +22,9 @@ import logika.Plosca;
 @SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame implements ActionListener {
 
-	private IgralnoPolje polje;
-	
+	public IgralnoPolje polje;
 	//Statusna vrstica v spodnjem delu okna
-	private JLabel status = new JLabel();
+	public JLabel status;
 	
 	// Izbire v menujih
 	private JMenuItem igraClovekRacunalnik;
@@ -37,14 +36,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem velikost11;
 	
 	public GlavnoOkno() {
-		super();
 		this.setTitle("Hex");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
 
-		
-		polje = new IgralnoPolje();
-		
+        polje = new IgralnoPolje();
+        status = new JLabel("Izberi igro");
+        
+        // polje
 		GridBagConstraints polje_layout = new GridBagConstraints();
 		polje_layout.gridx = 0;
 		polje_layout.gridy = 0;
@@ -53,6 +52,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
+		// statusna vrstica za sporočila
+		status.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
+		GridBagConstraints status_layout = new GridBagConstraints();
+		status_layout.gridx = 0;
+		status_layout.gridy = 1;
+		status_layout.anchor = GridBagConstraints.CENTER;
+		getContentPane().add(status, status_layout);
 		
 		// menu
 		JMenuBar menu_bar = new JMenuBar();
@@ -88,19 +94,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		size_menu.add(velikost11);
 		velikost11.addActionListener(this);
 		
-		// igralno polje
-		polje = new IgralnoPolje();
-		
-		// statusna vrstica za sporočila
-		status.setFont(new Font(status.getFont().getName(),
-							    status.getFont().getStyle(),
-							    20));
-		GridBagConstraints status_layout = new GridBagConstraints();
-		status_layout.gridx = 0;
-		status_layout.gridy = 1;
-		status_layout.anchor = GridBagConstraints.CENTER;
-		getContentPane().add(status, status_layout);
-		status.setText("Izberi igro");
 	}
 	
 	
@@ -138,7 +131,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
-			status.setText("v teku - Človek proti Človeku");
+			status.setText("haha");
 			Vodja.igramoNovoIgro();
 			
 			
@@ -155,7 +148,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	public void osveziGUI() {
 		switch (Vodja.igra.stanje()) {
 		case v_teku:
-			status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+			vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+			System.out.println(vodja.Vodja.okno.status.getText());
 			break;
 		case zmaga_rdeci:
 			status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
@@ -164,7 +158,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 			break;
 		}
-		polje.repaint();
 	}
 }	
 

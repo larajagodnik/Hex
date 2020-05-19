@@ -14,7 +14,7 @@ public class Vodja {
 	public static Map<Igralec,KdoIgra> kdoIgra;
 	public static Igra igra = null;
 	public static boolean clovekNaVrsti = false;
-	public static gui.GlavnoOkno okno = new gui.GlavnoOkno();
+	public static gui.GlavnoOkno okno;
 	
 	public static void igramoNovoIgro () {
 		igra = new Igra();

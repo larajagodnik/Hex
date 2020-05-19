@@ -19,11 +19,7 @@ public class Igra {
 // konstuktor za igro
 	public Igra() {
 		plosca = new logika.Plosca();
-		for (int x = 0; x > Plosca.N; x++) {
-			for (int y = 0; y < Plosca.N; y++) {
-				plosca.plosca[x][y] = this.plosca.plosca[x][y];
-			}
-		}
+		plosca.prazna();
 		naPotezi = Igralec.rdeci; // zacne rdeci
 	}
 	
@@ -32,7 +28,7 @@ public class Igra {
 		this.plosca = new Plosca();
 		for (int x = 0; x > Plosca.N; x++) {
 			for (int y = 0; y < Plosca.N; y++) {
-				this.plosca.plosca[x][y] = igra.plosca.plosca[x][y];
+				this.plosca.plosca[x][y] = plosca.plosca[x][y];
 			}
 		}
 		this.naPotezi = igra.naPotezi;
@@ -364,7 +360,7 @@ public class Igra {
 			}
 		}
 		
-		// ce ni nobenega polja vec zmaga tisti ki je postavil zadni zeton
+		// ce ni nobenega polja vec zmaga tisti ki je postavil zadnji zeton
 		if (igralec == Igralec.rdeci) {
 			return Stanje.zmaga_rdeci;
 		}
