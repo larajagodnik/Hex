@@ -1,4 +1,4 @@
-package splosno;
+package logika;
 
 public class KdoIgra {
 	

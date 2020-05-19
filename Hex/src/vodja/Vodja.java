@@ -3,45 +3,42 @@ package vodja;
 import java.util.Map;
 
 import gui.GlavnoOkno;
-import logika.Igra;
 import logika.Igralec;
-import splosno.KdoIgra;
-import splosno.Koordinati;
+import logika.KdoIgra;
+import logika.Koordinati;
+import splosno.Igra;
 
 public class Vodja {
 
 	public static Map<Igralec,VrstaIgralca> vrstaIgralca;
 	public static Map<Igralec,KdoIgra> kdoIgra;
-	public static GlavnoOkno okno;
 	public static Igra igra = null;
 	public static boolean clovekNaVrsti = false;
-		
+	public static gui.GlavnoOkno okno = new gui.GlavnoOkno();
 	
 	public static void igramoNovoIgro () {
-		igra = new Igra ();
+		igra = new Igra();
 		igramo();
 	}
 	
 	public static void igramo () {
 		okno.osveziGUI();
 		switch (igra.stanje()) {
-		case zmaga_rdeci: 
-		case zmaga_modri: 
-			return; // odhajamo iz metode igramo
-		case v_teku: 
-			Igralec igralec = igra.naPotezi();
-			
-			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
-			switch (vrstaNaPotezi) {
-			case C: 
-				clovekNaVrsti = true;
-				break;
-			case R:
-				igrajRacunalnikovoPotezo ();
-				break;
-			
-			}
-			
+			case zmaga_rdeci: 
+			case zmaga_modri: 
+				return; // odhajamo iz metode igramo
+			case v_teku:
+				okno.repaint();
+				Igralec igralec = igra.naPotezi();
+				VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
+				switch (vrstaNaPotezi) {
+				case C: 
+					clovekNaVrsti = true;
+					break;
+				case R:
+					igrajRacunalnikovoPotezo ();
+					break;
+				}
 		}
 	}
 	
