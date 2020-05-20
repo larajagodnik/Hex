@@ -274,7 +274,7 @@ public class Igra {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							if (veljavnaPoteza(sosedx, sosedy)) {          // nisem sigurna ce rabi to preverjat
+							if (poteze.contains(sosed)) {          // nisem sigurna ce rabi to preverjat
 								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
 									queue.add(sosed);
 									visited[sosedx][sosedy] = true;
@@ -319,7 +319,7 @@ public class Igra {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							if (veljavnaPoteza(sosedx, sosedy)) {          // nisem sigurna ce rabi to preverjat
+							if (poteze.contains(sosed)) {          // nisem sigurna ce rabi to preverjat
 								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
 									queue.add(sosed);
 									visited[sosedx][sosedy] = true;

@@ -8,14 +8,12 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.print.attribute.standard.MediaSize.NA;
+//import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.JPanel;
 
 import logika.Igralec;
 import logika.Koordinati;
 import logika.Plosca;
-import logika.Polje;
-import splosno.Igra;
 import vodja.Vodja;
 
 
@@ -218,21 +216,22 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		//poiscem indeks najblizjega sredisca
 		int[] minim = sredisce(klikX, klikY);
 		
-		logika.Koordinati p = new logika.Koordinati(minim[0], minim[1]);
+		Koordinati p = new Koordinati(minim[0], minim[1]);
 		
 		//da nismo kliknili izven igralnega polja
 		if(minim[2] < stranica()) {
-			if(vodja.Vodja.igra.odigraj(p) == true) {
-				if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
+			if(Vodja.igra.odigraj(p) == true) {
+				if(Vodja.igra.naPotezi() == Igralec.rdeci) {
 					//obratno, ker pobarvam po že opravljeni potezi
 					g.setColor(Color.BLUE);
-					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+					Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				}
 				else {
 					g.setColor(Color.RED);
-					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+					Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 					}
 				pobarvaj(g,minim,klikX,klikY);
+				Vodja.igrajClovekovoPotezo(p);
 			}
 		}
 	}

@@ -2,7 +2,6 @@ package vodja;
 
 import java.util.Map;
 
-import gui.GlavnoOkno;
 import logika.Igralec;
 import logika.KdoIgra;
 import logika.Koordinati;
@@ -32,6 +31,7 @@ public class Vodja {
 				VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 				switch (vrstaNaPotezi) {
 				case C: 
+					clovekNaVrsti = true;
 					//ko clovek na vrsti pocakaj na input in ga preveri					
 					break;
 				case R:
