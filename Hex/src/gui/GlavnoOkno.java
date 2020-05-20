@@ -14,17 +14,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logika.Igralec;
+import logika.KdoIgra;
 import vodja.VrstaIgralca;
 import vodja.Vodja;
-import splosno.KdoIgra;
+import logika.Plosca;
 
 @SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame implements ActionListener {
 
-	private IgralnoPolje polje;
-	
+	public IgralnoPolje polje;
 	//Statusna vrstica v spodnjem delu okna
-	private JLabel status;
+	public JLabel status;
 	
 	// Izbire v menujih
 	private JMenuItem igraClovekRacunalnik;
@@ -32,15 +32,18 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem igraClovekClovek;
 	private JMenuItem igraRacunalnikRacunalnik;
 	
+	private JMenuItem velikost5;
+	private JMenuItem velikost11;
+	
 	public GlavnoOkno() {
-		super();
 		this.setTitle("Hex");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
 
-		
-		polje = new IgralnoPolje();
-		
+        polje = new IgralnoPolje();
+        status = new JLabel("Izberi igro");
+        
+        // polje
 		GridBagConstraints polje_layout = new GridBagConstraints();
 		polje_layout.gridx = 0;
 		polje_layout.gridy = 0;
@@ -49,6 +52,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
+		// statusna vrstica za sporočila
+		status.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
+		GridBagConstraints status_layout = new GridBagConstraints();
+		status_layout.gridx = 0;
+		status_layout.gridy = 1;
+		status_layout.anchor = GridBagConstraints.CENTER;
+		getContentPane().add(status, status_layout);
 		
 		// menu
 		JMenuBar menu_bar = new JMenuBar();
@@ -72,36 +82,24 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		igra_menu.add(igraRacunalnikRacunalnik);
 		igraRacunalnikRacunalnik.addActionListener(this);
 
-		// igralno polje
-		polje = new IgralnoPolje();
-/**
-		GridBagConstraints polje_layout = new GridBagConstraints();
-		polje_layout.gridx = 0;
-		polje_layout.gridy = 0;
-		polje_layout.fill = GridBagConstraints.BOTH;
-		polje_layout.weightx = 1.0;
-		polje_layout.weighty = 1.0;
-		getContentPane().add(polje, polje_layout);
-	**/	
-		// statusna vrstica za sporočila
-		status = new JLabel();
-		status.setFont(new Font(status.getFont().getName(),
-							    status.getFont().getStyle(),
-							    20));
-		GridBagConstraints status_layout = new GridBagConstraints();
-		status_layout.gridx = 0;
-		status_layout.gridy = 1;
-		status_layout.anchor = GridBagConstraints.CENTER;
-		getContentPane().add(status, status_layout);
+		// velikost plosce
+		JMenu size_menu = new JMenu("Velikost");
+		menu_bar.add(size_menu);
 		
-		status.setText("Izberite igro!");
+		velikost5 = new JMenuItem("N = 5");
+		size_menu.add(velikost5);
+		velikost5.addActionListener(this);
 		
+		velikost11 = new JMenuItem("N = 11");
+		size_menu.add(velikost11);
+		velikost11.addActionListener(this);
 		
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//klik v okno Nova igra
 		if (e.getSource() == igraClovekRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
@@ -118,6 +116,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek")); 
 			Vodja.igramoNovoIgro();
+		}	else if (e.getSource() == igraRacunalnikClovek) {
+			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
+			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
+			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
+			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
+			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
+			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
+			Vodja.igramoNovoIgro();
 		} else if (e.getSource() == igraClovekClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
@@ -125,48 +131,31 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
-			//Vodja.igramoNovoIgro();
-		}
-		/**
-		} else if (e.getSource() == igraRacunalnikRacunalnik) {
-			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
-			Vodja.vrstaIgralca.put(Igralec.O, VrstaIgralca.R); 
-			Vodja.vrstaIgralca.put(Igralec.X, VrstaIgralca.R);
-			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.O, Vodja.racunalnikovaInteligenca);
-			Vodja.kdoIgra.put(Igralec.X, Vodja.racunalnikovaInteligenca); 
 			Vodja.igramoNovoIgro();
+			
+			
+		//klik v okno Velikost	
+		} else if (e.getSource() == velikost5) {
+			Plosca.N = 5;
+			repaint();
+		} else if (e.getSource() == velikost11) {
+			Plosca.N = 11;
+			repaint();
 		}
-		**/
 	}		
-
 	
 	public void osveziGUI() {
-		if (Vodja.igra == null) {
-			System.out.println("Igra ni v teku");
-			//status.setText("Igra ni v teku.");
+		switch (Vodja.igra.stanje()) {
+		case v_teku:
+			vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+			break;
+		case zmaga_rdeci:
+			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+			break;
+		case zmaga_modri:
+			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+			break;
 		}
-		else {
-			switch(Vodja.igra.stanje()) {
-			case v_teku: 
-				System.out.println("Na potezi je " + Vodja.igra.naPotezi() +  " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-				//status.setText("Na potezi je " + Vodja.igra.naPotezi() + 
-				//		" - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime()); 
-				break;
-			case zmaga_rdeci: 
-				System.out.println("Zmagal je RDEC - " + Vodja.igra.naPotezi() +  " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-				//status.setText("Zmagal je RDEC - " + 
-				//		Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime()); 
-				break;
-			case zmaga_modri: 
-				System.out.println("Zmagal je MODER - " + Vodja.igra.naPotezi() +  " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-				//status.setText("Zmagal je MODER - " + 
-				//		Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
-				break;
-			}
-		}
-		polje.repaint();
 	}
-
 }	
 

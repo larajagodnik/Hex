@@ -8,11 +8,15 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.JPanel;
 
+import logika.Igralec;
+import logika.Koordinati;
 import logika.Plosca;
+import logika.Polje;
+import splosno.Igra;
 import vodja.Vodja;
-import splosno.Koordinati;
 
 
 @SuppressWarnings("serial")
@@ -102,11 +106,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		double skupnaVisina = Plosca.N *3.0*a/2.0 + a/2.0;
 		
 		koordinate[0] = (getWidth() - skupnaDolzina)/2.0 + a*Math.cos(Math.PI/6) + (x-1) * xPremik + vrsticaPremik;
-
 		koordinate[1] = (getHeight() - skupnaVisina)/2.0 + a + (y-1)*yPremik;
 		
 		return koordinate;
-		
 	}
 	
 	//definiramo sredisca heksagonov
@@ -184,7 +186,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				//iskanje najmanjse dolzine v 2D
 				double kandidatX = Math.pow(klikX-srediscax[x][y], 2);
 				double kandidatY = Math.pow(klikY-srediscay[x][y], 2);
-				//shranimo indeks ce razdalja do kandidata manjÅ¡a
+				//shranimo indeks ce razdalja do kandidata manjsa
 				//nato zamenjamo kandidata s testiranjem (absX oziroma absY)
 				double razdalja = Math.sqrt(kandidatX+kandidatY);
 				if(razdalja < Math.sqrt(absX+absY)) {
@@ -198,40 +200,16 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		}
 		return minim;
 	}
-
-	
-	//ker se bomo po njih sprehajali s stevcem, ki se poveca z novim pobarvanim heksagonom imamo 11**2
-	public static double[][] pobarvani = new double[(int) Math.pow(11, 2)][2];
-	public static int stevec = 1;
-	public static boolean prvi = false;
-	
-	
-	//igranje z barvami
-	public Color color = Color.RED;
 	
 	protected void pobarvaj(Graphics g, int[] minim, int klikX, int klikY) {
 		//nas poligon je dolocen z oglisci okoli sredsica
 		int[][] poligon = oglisca(srediscax[minim[0]][minim[1]], srediscay[minim[0]][minim[1]]);
 		g.fillPolygon(poligon[0], poligon[1], 6);
-		
-		//dodamo sredisce poligona ki smo ga pobarvali med pobarvane
-		pobarvani[stevec][0] = minim[0];
-		pobarvani[stevec][1] = minim[1];
-		
-		//stevilo pobarvanih se poveca
-		stevec++;
-		
-		//test menjave barve
-		if(color == Color.RED) {color = Color.BLUE;}
-		else {color = Color.RED;}
 	}
 
-	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Graphics g = getGraphics();
-		g.setColor(color);
-		//if (Vodja.clovekNaVrsti) {
 		
 		//dobim pozicijo klika
 		int klikX = e.getX();
@@ -240,35 +218,23 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		//poiscem indeks najblizjega sredisca
 		int[] minim = sredisce(klikX, klikY);
 		
-
+		logika.Koordinati p = new logika.Koordinati(minim[0], minim[1]);
+		
 		//da nismo kliknili izven igralnega polja
-		if (minim[2] < stranica()) {
-			//posebej obravnavamo prvega ker ima pobarvani začetno vrednost 0,0
-			if (minim[0] == 0 && minim[1] == 0) {
-				if(prvi == false) {
-					int[][] poligon = oglisca(srediscax[0][0], srediscay[0][0]);
-					g.fillPolygon(poligon[0], poligon[1], 6);
-					prvi = true;
-					if(color == Color.RED) {color = Color.BLUE;}
-					else {color = Color.RED;}
+		if(minim[2] < stranica()) {
+			if(vodja.Vodja.igra.odigraj(p) == true) {
+				if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
+					//obratno, ker pobarvam po že opravljeni potezi
+					g.setColor(Color.BLUE);
+					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				}
+				else {
+					g.setColor(Color.RED);
+					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+					}
+				pobarvaj(g,minim,klikX,klikY);
 			}
-			
-			//preverim ostale, če so slučajno že pobarvani
-			boolean pobarvan = false;
-			for(int i = 1; i <= stevec; i++) {
-				if(pobarvani[i][0] == minim[0] && pobarvani [i][1] == minim[1]) {pobarvan = true;}
-			}
-			
-			//pobarvamo poligon
-			if(pobarvan == false) {
-				pobarvaj(g, minim, klikX, klikY);
-				Vodja.igrajClovekovoPotezo(new Koordinati(minim[0], minim[1]));
-				}
 		}
-		
-		//}
-		
 	}
 
 	public void mouseEntered(MouseEvent arg0) {}

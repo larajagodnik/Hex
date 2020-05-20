@@ -1,13 +1,12 @@
 package logika;
 
-/**
- * Možni igralci.
- */
+ //Možni igralci.
 
 public enum Igralec {
 	rdeci, modri;
 	
-	public Igralec nasprotnik() {
+	public Igralec nasprotnik() { 
+		//èe rdeè potem vrne moder, sicer rdec
 		return(this == rdeci ? modri: rdeci);
 	}
 

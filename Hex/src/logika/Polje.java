@@ -1,9 +1,5 @@
 package logika;
 
-/**
- * Možne vrednosti polj na plošči.
- */
+ //Možne vrednosti polj na plošči.
 
-public enum Polje {
-	rdece, modro, prazno;
-}
+public enum Polje {rdece, modro, prazno;}
