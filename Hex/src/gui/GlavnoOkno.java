@@ -131,7 +131,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
-			status.setText("haha");
 			Vodja.igramoNovoIgro();
 			
 			
@@ -149,13 +148,12 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		switch (Vodja.igra.stanje()) {
 		case v_teku:
 			vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-			System.out.println(vodja.Vodja.okno.status.getText());
 			break;
 		case zmaga_rdeci:
-			status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 			break;
 		case zmaga_modri:
-			status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 			break;
 		}
 	}

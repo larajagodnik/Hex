@@ -28,12 +28,11 @@ public class Vodja {
 			case zmaga_modri: 
 				return; // odhajamo iz metode igramo
 			case v_teku:
-				okno.repaint();
 				Igralec igralec = igra.naPotezi();
 				VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 				switch (vrstaNaPotezi) {
 				case C: 
-					clovekNaVrsti = true;
+					//ko clovek na vrsti pocakaj na input in ga preveri					
 					break;
 				case R:
 					igrajRacunalnikovoPotezo ();

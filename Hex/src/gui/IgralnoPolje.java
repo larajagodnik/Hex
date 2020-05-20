@@ -186,7 +186,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				//iskanje najmanjse dolzine v 2D
 				double kandidatX = Math.pow(klikX-srediscax[x][y], 2);
 				double kandidatY = Math.pow(klikY-srediscay[x][y], 2);
-				//shranimo indeks ce razdalja do kandidata manjÅ¡a
+				//shranimo indeks ce razdalja do kandidata manjsa
 				//nato zamenjamo kandidata s testiranjem (absX oziroma absY)
 				double razdalja = Math.sqrt(kandidatX+kandidatY);
 				if(razdalja < Math.sqrt(absX+absY)) {
@@ -222,12 +222,16 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		
 		//da nismo kliknili izven igralnega polja
 		if(minim[2] < stranica()) {
-			if(vodja.Vodja.igra.odigraj(p)==true) {
+			if(vodja.Vodja.igra.odigraj(p) == true) {
 				if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
-					g.setColor(Color.RED);
+					//obratno, ker pobarvam po že opravljeni potezi
+					g.setColor(Color.BLUE);
+					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				}
-				else {g.setColor(Color.BLUE);}
-				
+				else {
+					g.setColor(Color.RED);
+					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+					}
 				pobarvaj(g,minim,klikX,klikY);
 			}
 		}
