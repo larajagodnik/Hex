@@ -1,7 +1,7 @@
 package logika;
 
 public class Plosca {
-	public static int N = 11;
+	public static int N = 5;
 	public Polje[][] plosca;
 
 	//nova plosca

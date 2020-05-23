@@ -12,9 +12,10 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 import logika.Igralec;
+import logika.Koordinati;
 import logika.Plosca;
-import gui.GlavnoOkno;
 import vodja.Vodja;
+
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -206,54 +207,31 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
-		//preverim, da je clovek na vrsti, da ne more klikniti, če racunalnik na vrsti
-		if(vodja.Vodja.clovekNaVrsti == true) {
-			Graphics g = getGraphics();
-			
-			//dobim pozicijo klika
-			int klikX = e.getX();
-			int klikY = e.getY();
-			
-			//poiscem indeks najblizjega sredisca heksagona
-			int[] minim = sredisce(klikX, klikY);
-			
-			logika.Koordinati p = new logika.Koordinati(minim[0], minim[1]);
-			
-			//da nismo kliknili izven igralnega polja
-			if(minim[2] < stranica()) {
-				
-				//clovekova poteza (logika)
-				if(vodja.Vodja.igra.odigraj(p) == true) {
-					
-					//dolocimo barvo glede na to kdo je na potezi
-					if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
-						g.setColor(Color.RED);
-					}
-					else {
-						g.setColor(Color.BLUE);
-						}
-					
-					//pobarvamo primeren heksagon
-					pobarvaj(g,minim,klikX,klikY);
-					
-					if(vodja.Vodja.igra.zmagovalniBFS()==true) {
-						vodja.Vodja.zmaga = true;
-						vodja.Vodja.clovekNaVrsti = false;
-						vodja.Vodja.igramo();
-						}
-					else {
-						//zamenjam tistega, ki je na vrsti z nasprotnikom in osvezim stanje gui
-						vodja.Vodja.igra.naPotezi = vodja.Vodja.igra.naPotezi.nasprotnik();
-						vodja.Vodja.okno.osveziStanje();
-						
-						//clovekNaVrsti je false, saj ne vem ali je nasprotnik clovek
-						vodja.Vodja.clovekNaVrsti = false;
-						
-						//vrnem se nazaj na vodjo, ki skrbi za igro
-						vodja.Vodja.igramo();
-					}
+		Graphics g = getGraphics();
+		
+		//dobim pozicijo klika
+		int klikX = e.getX();
+		int klikY = e.getY();
+		
+		//poiscem indeks najblizjega sredisca
+		int[] minim = sredisce(klikX, klikY);
+		
+		Koordinati p = new Koordinati(minim[0], minim[1]);
+		
+		//da nismo kliknili izven igralnega polja
+		if(minim[2] < stranica()) {
+			if(Vodja.igra.odigraj(p) == true) {
+				if(Vodja.igra.naPotezi() == Igralec.rdeci) {
+					//obratno, ker pobarvam po že opravljeni potezi
+					g.setColor(Color.BLUE);
+					Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				}
+				else {
+					g.setColor(Color.RED);
+					Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+					}
+				pobarvaj(g,minim,klikX,klikY);
+				Vodja.igrajClovekovoPotezo(p);
 			}
 		}
 	}
