@@ -92,8 +92,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		velikost11 = new JMenuItem("N = 11");
 		size_menu.add(velikost11);
-		velikost11.addActionListener(this);
-		
+		velikost11.addActionListener(this);	
 	}
 	
 	
@@ -108,6 +107,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
+			repaint();
 		} else if (e.getSource() == igraRacunalnikClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
@@ -116,7 +116,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek")); 
 			Vodja.igramoNovoIgro();
-		}	else if (e.getSource() == igraRacunalnikClovek) {
+			repaint();
+		}	else if (e.getSource() == igraRacunalnikRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
@@ -124,6 +125,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
 			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
+			repaint();
 		} else if (e.getSource() == igraClovekClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
@@ -132,18 +134,36 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
 			Vodja.igramoNovoIgro();
+			repaint();
 			
 			
 		//klik v okno Velikost	
 		} else if (e.getSource() == velikost5) {
-			Plosca.N = 5;
+			Plosca.N = 3;
+			vodja.Vodja.okno.status.setText("Izberi igro");
 			repaint();
+			vodja.Vodja.clovekNaVrsti = false;
 		} else if (e.getSource() == velikost11) {
 			Plosca.N = 11;
+			vodja.Vodja.okno.status.setText("Izberi igro");
 			repaint();
+			vodja.Vodja.clovekNaVrsti = false;
 		}
-	}		
+	}
 	
+
+	public void osveziStanje() {
+		switch (Vodja.igra.stanje()) {
+		case v_teku:
+			vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+			break;
+		case zmaga_rdeci:
+			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+			break;
+		case zmaga_modri:
+			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+			break;
+
 	public void osveziGUI() {
 		if (Vodja.igra == null) {
 			status.setText("Igra ni v teku.");
