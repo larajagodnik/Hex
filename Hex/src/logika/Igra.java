@@ -1,51 +1,49 @@
 package logika;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import splosno.Koordinati;
+
 public class Igra {
-	public Plosca plosca;
+	public logika.Plosca plosca;
 	public Igralec naPotezi;
 	public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
-	// konstuktor za igro
+
+// konstuktor za igro
 	public Igra() {
-		plosca = new Plosca();
-		for (int x = 0; x > Plosca.N; x++) {
-			for (int y = 0; y < Plosca.N; y++) {
-				plosca.plosca[x][y] = this.plosca.plosca[x][y];
-			}
-		}
-		
+		plosca = new logika.Plosca();
+		plosca.prazna();
 		naPotezi = Igralec.rdeci; // zacne rdeci
 	}
-
-	/**
-	 * Kopija igre
-	 */
+	
+// Kopija igre --> Zakaj?
 	public Igra(Igra igra) {
 		this.plosca = new Plosca();
 		for (int x = 0; x > Plosca.N; x++) {
 			for (int y = 0; y < Plosca.N; y++) {
-				this.plosca.plosca[x][y] = igra.plosca.plosca[x][y];
+				this.plosca.plosca[x][y] = plosca.plosca[x][y];
 			}
 		}
 		this.naPotezi = igra.naPotezi;
 	}
-
+	
 	/**
 	 * @return igralna plosca
 	 */
 	public Polje[][] getPlosca () {
 		return plosca.plosca;
 	}
-
+	
 	/**
 	 * @return igralec, ki je na potezi
 	 */
 	public Igralec naPotezi() {
 		return naPotezi;
 	}
-
+	
 
 	//seznam moznih potez
 	public List<Koordinati> moznePoteze() {
@@ -59,34 +57,31 @@ public class Igra {
 		}
 		return poteze;
 	}
-	
+
 	// ali je poteza veljavna
 	public boolean veljavnaPoteza(int x, int y) {
-		if (x < 0 || x >= Plosca.N || y < 0 || y >= Plosca.N) {
-			return false;
-		}
-		return true;
+		if(plosca.plosca[x][y] == Polje.prazno) {return true;}
+		else {return false;}
 	}
 	
 	// ce je mozno odigrati potezo se ta doda v seznam poteze, na vrsti pa bo nasprotnik
 	public boolean odigraj(Koordinati p) {
 		int x = p.getX();
 		int y = p.getY();
-		if (veljavnaPoteza(x, y)) {  // a rabmo to preverjat?
+		if (veljavnaPoteza(x, y)) {
 			if (plosca.plosca[x][y] == Polje.prazno) {
 				plosca.plosca[x][y] = naPotezi.getPolje();
 				naPotezi = naPotezi.nasprotnik();
 				poteze.add(p);
 				return true;
 			}
-			else {
-				return false;
-			}
+			else {return false;}
 		}
 		return false;	
 	}
 	
 	// razveljavi zadnjo potezo, in zamenja nasprotnika da bo spet isti kot pred razveljavitvijo
+	//Čemu to obstaja?
 	public void razveljavi() {
 		Koordinati zadnjaPoteza = poteze.get(poteze.size()-1);
 		plosca.plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.prazno;
@@ -220,7 +215,10 @@ public class Igra {
 			return Stanje.zmaga_modri;
 		}		
 	}
+
 **/
+
+
 /**
  * kako najti zmagovalno vrsto
  * vrsto isces za v sako zacetno vozlisce posebej rdec ce je y=0 in moder ce je x=0
@@ -269,13 +267,13 @@ public class Igra {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							//if (veljavnaPoteza(sosedx, sosedy)) {          // nisem sigurna ce rabi to preverjat
-							if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-								queue.add(sosed);
-								visited[sosedx][sosedy] = true;
-								stars.put(sosed, polje);
-							}		
-							//}
+							if (poteze.contains(sosed)) {          // nisem sigurna ce rabi to preverjat
+								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
+									queue.add(sosed);
+									visited[sosedx][sosedy] = true;
+									stars.put(sosed, polje);
+								}		
+							}
 						}
 					}
 				}
@@ -314,13 +312,13 @@ public class Igra {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							//if (veljavnaPoteza(sosedx, sosedy)) {          // nisem sigurna ce rabi to preverjat
-							if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-								queue.add(sosed);
-								visited[sosedx][sosedy] = true;
-								stars.put(sosed, polje);
-							}		
-							//}
+							if (poteze.contains(sosed)) {          // nisem sigurna ce rabi to preverjat
+								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
+									queue.add(sosed);
+									visited[sosedx][sosedy] = true;
+									stars.put(sosed, polje);
+								}		
+							}
 						}
 					}
 				}
@@ -355,7 +353,7 @@ public class Igra {
 			}
 		}
 		
-		// ce ni nobenega polja vec zmaga tisti ki je postavil zadni zeton
+		// ce ni nobenega polja vec zmaga tisti ki je postavil zadnji zeton
 		if (igralec == Igralec.rdeci) {
 			return Stanje.zmaga_rdeci;
 		}
