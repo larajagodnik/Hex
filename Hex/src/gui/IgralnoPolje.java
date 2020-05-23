@@ -8,11 +8,13 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+//import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.JPanel;
 
 import logika.Igralec;
 import logika.Plosca;
 import gui.GlavnoOkno;
+import vodja.Vodja;
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -204,6 +206,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+
 		//preverim, da je clovek na vrsti, da ne more klikniti, če racunalnik na vrsti
 		if(vodja.Vodja.clovekNaVrsti == true) {
 			Graphics g = getGraphics();
