@@ -8,16 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.JPanel;
 
 import logika.Igralec;
-import logika.Koordinati;
 import logika.Plosca;
-import logika.Polje;
-import splosno.Igra;
-import vodja.Vodja;
-
+import gui.GlavnoOkno;
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -209,30 +204,53 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Graphics g = getGraphics();
-		
-		//dobim pozicijo klika
-		int klikX = e.getX();
-		int klikY = e.getY();
-		
-		//poiscem indeks najblizjega sredisca
-		int[] minim = sredisce(klikX, klikY);
-		
-		logika.Koordinati p = new logika.Koordinati(minim[0], minim[1]);
-		
-		//da nismo kliknili izven igralnega polja
-		if(minim[2] < stranica()) {
-			if(vodja.Vodja.igra.odigraj(p) == true) {
-				if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
-					//obratno, ker pobarvam po že opravljeni potezi
-					g.setColor(Color.BLUE);
-					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-				}
-				else {
-					g.setColor(Color.RED);
-					vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+		//preverim, da je clovek na vrsti, da ne more klikniti, če racunalnik na vrsti
+		if(vodja.Vodja.clovekNaVrsti == true) {
+			Graphics g = getGraphics();
+			
+			//dobim pozicijo klika
+			int klikX = e.getX();
+			int klikY = e.getY();
+			
+			//poiscem indeks najblizjega sredisca heksagona
+			int[] minim = sredisce(klikX, klikY);
+			
+			logika.Koordinati p = new logika.Koordinati(minim[0], minim[1]);
+			
+			//da nismo kliknili izven igralnega polja
+			if(minim[2] < stranica()) {
+				
+				//clovekova poteza (logika)
+				if(vodja.Vodja.igra.odigraj(p) == true) {
+					
+					//dolocimo barvo glede na to kdo je na potezi
+					if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
+						g.setColor(Color.RED);
 					}
-				pobarvaj(g,minim,klikX,klikY);
+					else {
+						g.setColor(Color.BLUE);
+						}
+					
+					//pobarvamo primeren heksagon
+					pobarvaj(g,minim,klikX,klikY);
+					
+					if(vodja.Vodja.igra.zmagovalniBFS()==true) {
+						vodja.Vodja.zmaga = true;
+						vodja.Vodja.clovekNaVrsti = false;
+						vodja.Vodja.igramo();
+						}
+					else {
+						//zamenjam tistega, ki je na vrsti z nasprotnikom in osvezim stanje gui
+						vodja.Vodja.igra.naPotezi = vodja.Vodja.igra.naPotezi.nasprotnik();
+						vodja.Vodja.okno.osveziStanje();
+						
+						//clovekNaVrsti je false, saj ne vem ali je nasprotnik clovek
+						vodja.Vodja.clovekNaVrsti = false;
+						
+						//vrnem se nazaj na vodjo, ki skrbi za igro
+						vodja.Vodja.igramo();
+					}
+				}
 			}
 		}
 	}
