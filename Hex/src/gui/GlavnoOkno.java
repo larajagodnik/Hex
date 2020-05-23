@@ -14,10 +14,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logika.Igralec;
-import logika.KdoIgra;
 import vodja.VrstaIgralca;
 import vodja.Vodja;
 import logika.Plosca;
+import splosno.KdoIgra;
 
 @SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame implements ActionListener {

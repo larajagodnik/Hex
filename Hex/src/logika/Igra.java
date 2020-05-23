@@ -1,12 +1,8 @@
-package splosno;
+package logika;
 
 import java.util.*;
 
-import logika.Igralec;
-import logika.Koordinati;
-import logika.Plosca;
-import logika.Polje;
-import logika.Stanje;
+import splosno.Koordinati;
 
 public class Igra {
 	public logika.Plosca plosca;

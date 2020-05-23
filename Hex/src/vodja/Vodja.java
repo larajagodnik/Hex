@@ -3,10 +3,10 @@ package vodja;
 import java.util.Map;
 
 import gui.GlavnoOkno;
+import logika.Igra;
 import logika.Igralec;
-import logika.KdoIgra;
-import logika.Koordinati;
-import splosno.Igra;
+import splosno.KdoIgra;
+import splosno.Koordinati;
 
 public class Vodja {
 

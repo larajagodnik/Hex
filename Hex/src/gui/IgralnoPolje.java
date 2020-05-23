@@ -215,7 +215,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			//poiscem indeks najblizjega sredisca heksagona
 			int[] minim = sredisce(klikX, klikY);
 			
-			logika.Koordinati p = new logika.Koordinati(minim[0], minim[1]);
+			splosno.Koordinati p = new splosno.Koordinati(minim[0], minim[1]);
 			
 			//da nismo kliknili izven igralnega polja
 			if(minim[2] < stranica()) {
