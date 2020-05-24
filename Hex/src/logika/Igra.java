@@ -179,6 +179,7 @@ public class Igra {
 		
 		//ce na vrsti rdeci in zmaga, v resnici zmaga modri, ker odigraj(p) zamenjal kdo je naPotezi
 		
+		
 		if (naPotezi == Igralec.rdeci) {
 			if (vodja.Vodja.zmaga == true) {
 				return Stanje.zmaga_rdeci;
@@ -260,10 +261,12 @@ public class Igra {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
+							if (poteze.contains(sosed)){
+								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
 								queue.add(sosed);
 								visited[sosedx][sosedy] = true;
-								stars.put(sosed, polje);		
+								stars.put(sosed, polje);
+								}	
 							}
 						}
 					}
@@ -271,49 +274,51 @@ public class Igra {
 			}
 		}
 
-			else {
-				for (int i=0; i<Plosca.N; i++) {
-					LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
-					HashMap<Koordinati, Koordinati> stars = new HashMap<Koordinati, Koordinati>();
+		else {
+			for (int i=0; i<Plosca.N; i++) {
+				LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
+				HashMap<Koordinati, Koordinati> stars = new HashMap<Koordinati, Koordinati>();
 
-					if (plosca.plosca[0][i] == Polje.modro) {
-						Koordinati zacetek = new Koordinati(0, i);
-						queue.add(zacetek);
-						visited[0][i] = true;
-						stars.put(zacetek, zacetek);
+				if (plosca.plosca[0][i] == Polje.modro) {
+					Koordinati zacetek = new Koordinati(0, i);
+					queue.add(zacetek);
+					visited[0][i] = true;
+					stars.put(zacetek, zacetek);
 
-						while(!queue.isEmpty()) {
-							Koordinati polje = queue.pop();
-							int x = polje.getX();
-							int y = polje.getY();
+					while(!queue.isEmpty()) {
+						Koordinati polje = queue.pop();
+						int x = polje.getX();
+						int y = polje.getY();
 
-							if (x == Plosca.N - 1) {
-								List<Koordinati> zmagovalnaVrsta = new ArrayList<>();
+						if (x == Plosca.N - 1) {
+							List<Koordinati> zmagovalnaVrsta = new ArrayList<>();
 
-								while (stars.get(polje) != polje ){
-									Koordinati s = stars.get(polje);
-									zmagovalnaVrsta.add(polje);
-									polje = s;
-								}
-								return zmagovalnaVrsta;
+							while (stars.get(polje) != polje ){
+								Koordinati s = stars.get(polje);
+								zmagovalnaVrsta.add(polje);
+								polje = s;
 							}
+							return zmagovalnaVrsta;
+						}
 
-							int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
-							for (int j=0; j<smeri.length; j++) {
-								int sosedx = x + smeri[j][0];
-								int sosedy = y + smeri[j][1];
-								Koordinati sosed = new Koordinati(sosedx, sosedy);
+						int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
+						for (int j=0; j<smeri.length; j++) {
+							int sosedx = x + smeri[j][0];
+							int sosedy = y + smeri[j][1];
+							Koordinati sosed = new Koordinati(sosedx, sosedy);
+							if (poteze.contains(sosed)) {
 								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-									queue.add(sosed);
-									visited[sosedx][sosedy] = true;
-									stars.put(sosed, polje);		
-								}
+								queue.add(sosed);
+								visited[sosedx][sosedy] = true;
+								stars.put(sosed, polje);	
+								}			
 							}
 						}
 					}
 				}
 			}
-			return null;
+		}
+		return null;
 	}
 }
 	
