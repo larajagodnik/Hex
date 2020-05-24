@@ -1,7 +1,11 @@
 package vodja;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import javax.swing.SwingWorker;
+
+import inteligenca.RandomHex;
 import logika.Igra;
 import logika.Igralec;
 import splosno.KdoIgra;
@@ -50,7 +54,27 @@ public class Vodja {
 
 
 	// potrebno se napisat!
+	public static RandomHex racunalnikovaInteligenca = new RandomHex();
+	
 	public static void igrajRacunalnikovoPotezo() {
-		
+		Igra zacetkaIgra = igra;
+		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
+			@Override
+			protected Koordinati doInBackground() {
+				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
+				Koordinati poteza = racunalnikovaInteligenca.izberiPotezo(igra);
+				return poteza;
+			}
+			@Override
+			protected void done () {
+				Koordinati poteza = null;
+				try {poteza = get();} catch (Exception e) {};
+				if (igra == zacetkaIgra) {
+					igra.odigraj(poteza);
+					igramo ();
+				}
+			}
+		};
+		worker.execute();
 	}
 }

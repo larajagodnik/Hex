@@ -105,7 +105,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
-			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
 			repaint();
 		} else if (e.getSource() == igraRacunalnikClovek) {
@@ -113,7 +113,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.C);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek")); 
 			Vodja.igramoNovoIgro();
 			repaint();
@@ -122,8 +122,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
-			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
 			repaint();
 		} else if (e.getSource() == igraClovekClovek) {
