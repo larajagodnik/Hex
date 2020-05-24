@@ -6,7 +6,6 @@ import splosno.Koordinati;
 
 public class Igra {
 	public logika.Plosca plosca;
-	private logika.Polje katero;
 	public Igralec naPotezi;
 	public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
 	public ArrayList<Koordinati> vrsta = new ArrayList<Koordinati>();
@@ -67,7 +66,7 @@ public class Igra {
 		if (plosca.plosca[x][y] == Polje.prazno) {
 			plosca.plosca[x][y] = naPotezi.getPolje();
 			poteze.add(p);
-			zmagovalnaVrsta = zmagovalnaVrsta(Igralec.rdeci);
+			zmagovalnaVrsta = zmagovalnaVrsta(naPotezi);
 			naPotezi = naPotezi.nasprotnik();
 			return true;
 		}
@@ -165,14 +164,14 @@ public class Igra {
 							vodja.Vodja.zmaga = true;
 							//append začetnega torej (y=0, x=...)
 							zmagovalnaVrsta.add(zacetek);
-							//dovolj je le 1 od tistih na zacetnem robu (za rdeče y=0)
-							//seveda da to lahko preverimo rabimo vsaj 3 v vrsti
-							if(zmagovalnaVrsta.size()>2) {
-								while(zmagovalnaVrsta.get(zmagovalnaVrsta.size()-2).getY() == 0) {
-									zmagovalnaVrsta.remove(zmagovalnaVrsta.size()-1);
-								}
+							//poskrbimo, da le pot od y=0 do y=N-1 
+							boolean bool = true;
+							int k = 0;
+							while(bool) {
+								if(zmagovalnaVrsta.get(k).getY()==0) {bool = false;}
+								k++;
 							}
-							return zmagovalnaVrsta;
+							return zmagovalnaVrsta.subList(0, k);
 						}
 
 						int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
@@ -192,59 +191,56 @@ public class Igra {
 				}
 			}
 		}
+		
+		else {
+			for (int i=0; i<Plosca.N; i++) {
+				LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
+				HashMap<Koordinati, Koordinati> stars = new HashMap<Koordinati, Koordinati>();
+				if (plosca.plosca[0][i] == Polje.modro) {
+					Koordinati zacetek = new Koordinati(0, i);
+					queue.add(zacetek);
+					visited[0][i] = true;
+					stars.put(zacetek, zacetek);
 
-			else {
-				for (int i=0; i<Plosca.N; i++) {
-					LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
-					HashMap<Koordinati, Koordinati> stars = new HashMap<Koordinati, Koordinati>();
-
-					if (plosca.plosca[0][i] == Polje.modro) {
-						Koordinati zacetek = new Koordinati(0, i);
-						queue.add(zacetek);
-						visited[0][i] = true;
-						stars.put(zacetek, zacetek);
-
-						while(!queue.isEmpty()) {
-							Koordinati polje = queue.pop();
-							int x = polje.getX();
-							int y = polje.getY();
-
-							if (x == Plosca.N - 1) {
-								List<Koordinati> zmagovalnaVrsta = new ArrayList<>();
-
-								while (stars.get(polje) != polje ){
-									Koordinati s = stars.get(polje);
-									zmagovalnaVrsta.add(polje);
-									polje = s;
-								}
-								vodja.Vodja.zmaga = true;
-								zmagovalnaVrsta.add(zacetek);
-								if(zmagovalnaVrsta.size()>2) {
-									while(zmagovalnaVrsta.get(zmagovalnaVrsta.size()-2).getX() == 0) {
-										zmagovalnaVrsta.remove(zmagovalnaVrsta.size()-1);
-									}
-								}
-								return zmagovalnaVrsta;
+					while(!queue.isEmpty()) {
+						Koordinati polje = queue.pop();
+						int x = polje.getX();
+						int y = polje.getY();
+						if (x == Plosca.N - 1) {
+							ArrayList<Koordinati> zmagovalnaVrsta = new ArrayList<>();
+							while (stars.get(polje) != polje ){
+								Koordinati s = stars.get(polje);
+								zmagovalnaVrsta.add(polje);
+								polje = s;
 							}
-
-							int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
-							for (int j=0; j<smeri.length; j++) {
-								int sosedx = x + smeri[j][0];
-								int sosedy = y + smeri[j][1];
-								Koordinati sosed = new Koordinati(sosedx, sosedy);
-								if (sosedx>=0 && sosedy >= 0 && sosedx<Plosca.N && sosedy<Plosca.N) {
-									if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-										queue.add(sosed);
-										visited[sosedx][sosedy] = true;
-										stars.put(sosed, polje);		
-									}
+							vodja.Vodja.zmaga = true;
+							zmagovalnaVrsta.add(zacetek);
+							boolean bool = true;
+							int k = 0;
+							while(bool) {
+								if(zmagovalnaVrsta.get(k).getX()==0) {bool = false;}
+								k++;
+							}
+							return zmagovalnaVrsta.subList(0, k);
+						}
+						int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
+						for (int j=0; j<smeri.length; j++) {
+							int sosedx = x + smeri[j][0];
+							int sosedy = y + smeri[j][1];
+							Koordinati sosed = new Koordinati(sosedx, sosedy);
+							if (sosedx>=0 && sosedy >= 0 && sosedx<Plosca.N && sosedy<Plosca.N) {
+								if (plosca.plosca[sosedx][sosedy] == Polje.modro && !visited[sosedx][sosedy]) {
+									queue.add(sosed);
+									visited[sosedx][sosedy] = true;
+									stars.put(sosed, polje);		
 								}
 							}
 						}
 					}
 				}
 			}
-			return null;
+		}
+		return null;
 	}
 }
 	
