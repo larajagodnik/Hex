@@ -87,6 +87,7 @@ public class Igra {
 		
 		//ce na vrsti rdeci in zmaga, v resnici zmaga modri, ker odigraj(p) zamenjal kdo je naPotezi
 		
+		
 		if (naPotezi == Igralec.rdeci) {
 			if (vodja.Vodja.zmaga == true) {
 				return Stanje.zmaga_rdeci;

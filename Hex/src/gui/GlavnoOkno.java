@@ -66,19 +66,19 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		JMenu igra_menu = new JMenu("Nova igra");
 		menu_bar.add(igra_menu);
 
-		igraClovekRacunalnik = new JMenuItem("ÄŚlovek â€“ raÄŤunalnik");
+		igraClovekRacunalnik = new JMenuItem("Človek Računalnik");
 		igra_menu.add(igraClovekRacunalnik);
 		igraClovekRacunalnik.addActionListener(this);
 		
-		igraRacunalnikClovek = new JMenuItem("RaÄŤunalnik â€“ ÄŤlovek");
+		igraRacunalnikClovek = new JMenuItem("Računalnik Človek");
 		igra_menu.add(igraRacunalnikClovek);
 		igraRacunalnikClovek.addActionListener(this);
 		
-		igraClovekClovek = new JMenuItem("ÄŚlovek â€“ ÄŤlovek");
+		igraClovekClovek = new JMenuItem("Človek Človek");
 		igra_menu.add(igraClovekClovek);
 		igraClovekClovek.addActionListener(this);
 		
-		igraRacunalnikRacunalnik = new JMenuItem("RaÄŤunalnik â€“ raÄŤunalnik");
+		igraRacunalnikRacunalnik = new JMenuItem("Računalnik Računalnik");
 		igra_menu.add(igraRacunalnikRacunalnik);
 		igraRacunalnikRacunalnik.addActionListener(this);
 
@@ -104,8 +104,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("ÄŚlovek")); 
-			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
+			Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
 			repaint();
 		} else if (e.getSource() == igraRacunalnikClovek) {
@@ -113,8 +113,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.C);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
-			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("ÄŚlovek")); 
+			Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek")); 
 			Vodja.igramoNovoIgro();
 			repaint();
 		}	else if (e.getSource() == igraRacunalnikRacunalnik) {
@@ -122,8 +122,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
-			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
+			Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
 			repaint();
 		} else if (e.getSource() == igraClovekClovek) {
@@ -131,8 +131,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.C);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("ÄŚlovek")); 
-			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("ÄŚlovek"));
+			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
+			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
 			Vodja.igramoNovoIgro();
 			Vodja.okno.repaint();
 			
@@ -162,10 +162,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				break;
 			case zmaga_rdeci:
 				//pazi tukaj je trenutno nasprotnik zmagovalec ker odigraj(p) zamenja vloge POPRAVI
-				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 				break;
 			case zmaga_modri:
-				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 				break;
 			}
 		}
