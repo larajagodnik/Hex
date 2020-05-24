@@ -44,12 +44,10 @@ public class Vodja {
 		}
 	}
 	
-//	public static void igrajClovekovoPotezo() {
-//		clovekNaVrsti = true;
-//		igra.naPotezi = igra.naPotezi.nasprotnik();
-//		clovekNaVrsti = false;
-//		igramo();
-//	}
+	public static void igrajClovekovoPotezo(Koordinati p) {
+		if(igra.odigraj(p)) clovekNaVrsti = false;
+		igramo();
+	}
 
 
 	// potrebno se napisat!

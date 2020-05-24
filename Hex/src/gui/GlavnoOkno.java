@@ -152,17 +152,24 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	}
 	
 	public void osveziStanje() {
-		switch (Vodja.igra.stanje()) {
-		case v_teku:
-			vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-			break;
-		case zmaga_rdeci:
-			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-			break;
-		case zmaga_modri:
-			vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-			break;
+		if (Vodja.igra == null) {
+			status.setText("Igra ni v teku.");
 		}
+		else {
+			switch (Vodja.igra.stanje()) {
+			case v_teku:
+				vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				break;
+			case zmaga_rdeci:
+				//pazi tukaj je trenutno nasprotnik zmagovalec ker odigraj(p) zamenja vloge POPRAVI
+				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				break;
+			case zmaga_modri:
+				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				break;
+			}
+		}
+	polje.repaint();
 	}
 }	
 

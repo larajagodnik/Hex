@@ -58,25 +58,19 @@ public class Igra {
 		return poteze;
 	}
 
-	// ali je poteza veljavna
-	public boolean veljavnaPoteza(int x, int y) {
-		if(plosca.plosca[x][y] == Polje.prazno) {return true;}
-		else {return false;}
-	}
 	
 	// ce je mozno odigrati potezo se ta doda v seznam poteze, na vrsti pa bo nasprotnik
 	public boolean odigraj(Koordinati p) {
 		int x = p.getX();
 		int y = p.getY();
-		if (veljavnaPoteza(x, y)) {
-			if (plosca.plosca[x][y] == Polje.prazno) {
-				plosca.plosca[x][y] = naPotezi.getPolje();
-				poteze.add(p);
-				return true;
-			}
-			else {return false;}
+		if (plosca.plosca[x][y] == Polje.prazno) {
+			plosca.plosca[x][y] = naPotezi.getPolje();
+			poteze.add(p);
+			vodja.Vodja.zmaga = vodja.Vodja.igra.zmagovalniBfs();
+			naPotezi = naPotezi.nasprotnik();
+			return true;
 		}
-		return false;	
+		else {return false;}
 	}
 	
 	// razveljavi zadnjo potezo, in zamenja nasprotnika da bo spet isti kot pred razveljavitvijo
@@ -133,7 +127,7 @@ public class Igra {
 	}
 	
 	//preverimo ali je poteza zmagovalna
-	public boolean zmagovalniBFS() {
+	public boolean zmagovalniBfs() {
 		obiskani = new ArrayList<Koordinati>();
 		vrsta = new ArrayList<Koordinati>();
 		ArrayList<Koordinati> rob = new ArrayList<Koordinati>();
@@ -173,7 +167,6 @@ public class Igra {
 			}
 			for (int j=0; j < obiskani.size(); j++) {
 	       		if(obiskani.get(j).getY()==Plosca.N-1 && katero == Polje.rdece) {
-	       			System.out.println("we here boi");
 	       			return true;}
 	       		else if(obiskani.get(j).getX()==Plosca.N-1 && katero == Polje.modro) {return true;}
 	       	}
@@ -184,6 +177,8 @@ public class Igra {
 	//vrne stanje igre glede na metodo zmagovalna vrsta
 	public Stanje stanje() {
 		// Ali imamo zmagovalca?
+		
+		//ce na vrsti rdeci in zmaga, v resnici zmaga modri, ker odigraj(p) zamenjal kdo je naPotezi
 		
 		if (naPotezi == Igralec.rdeci) {
 			if (vodja.Vodja.zmaga == true) {
@@ -214,6 +209,7 @@ public class Igra {
 			return Stanje.zmaga_modri;
 		}
 	}
+	
 
 
 /**
@@ -265,12 +261,10 @@ public class Igra {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							if (veljavnaPoteza(sosedx, sosedy)) {          // nisem sigurna ce rabi to preverjat
-								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-									queue.add(sosed);
-									visited[sosedx][sosedy] = true;
-									stars.put(sosed, polje);
-								}		
+							if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
+								queue.add(sosed);
+								visited[sosedx][sosedy] = true;
+								stars.put(sosed, polje);		
 							}
 						}
 					}
@@ -310,12 +304,10 @@ public class Igra {
 								int sosedx = x + smeri[j][0];
 								int sosedy = y + smeri[j][1];
 								Koordinati sosed = new Koordinati(sosedx, sosedy);
-								if (veljavnaPoteza(sosedx, sosedy)) {          // nisem sigurna ce rabi to preverjat
-									if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-										queue.add(sosed);
-										visited[sosedx][sosedy] = true;
-										stars.put(sosed, polje);
-									}		
+								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
+									queue.add(sosed);
+									visited[sosedx][sosedy] = true;
+									stars.put(sosed, polje);		
 								}
 							}
 						}
@@ -326,3 +318,4 @@ public class Igra {
 	}
 }
 	
+
