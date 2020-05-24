@@ -8,11 +8,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import logika.Plosca;
 import logika.Polje;
+import splosno.Koordinati;
 import vodja.Vodja;
 
 @SuppressWarnings("serial")
@@ -205,7 +207,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				
 			}	
 		}
-		
 		Polje[][] plosca;;
 		if (Vodja.igra != null) {
 			plosca = Vodja.igra.getPlosca();
@@ -224,7 +225,19 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 					}
 				}
 			}
-		}	
+		}
+		
+		if(vodja.Vodja.zmaga) {
+			List<Koordinati> vrsta = vodja.Vodja.igra.zmagovalnaVrsta;
+			for(int k=0; k < vrsta.size(); k++) {
+				int i = vrsta.get(k).getX();
+				int j = vrsta.get(k).getY();
+				int[][] poligon = oglisca(srediscax[i][j], srediscay[i][j]);
+				g2.setColor(Color.YELLOW);
+				g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH * 1.5)));
+				g2.drawPolygon(poligon[0], poligon[1], 6);
+			}
+		}
 	}
 	
 	@Override

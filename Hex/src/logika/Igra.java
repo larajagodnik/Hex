@@ -6,11 +6,11 @@ import splosno.Koordinati;
 
 public class Igra {
 	public logika.Plosca plosca;
-	private logika.Polje katero;
 	public Igralec naPotezi;
 	public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
 	public ArrayList<Koordinati> vrsta = new ArrayList<Koordinati>();
-	public ArrayList<Koordinati> obiskani = new ArrayList<Koordinati>();
+	public ArrayList<Koordinati> obiskani = new ArrayList<Koordinati>();	
+	public List<Koordinati> zmagovalnaVrsta  = new ArrayList<Koordinati>();
 
 // konstuktor za igro
 	public Igra() {
@@ -66,7 +66,7 @@ public class Igra {
 		if (plosca.plosca[x][y] == Polje.prazno) {
 			plosca.plosca[x][y] = naPotezi.getPolje();
 			poteze.add(p);
-			vodja.Vodja.zmaga = vodja.Vodja.igra.zmagovalniBfs();
+			zmagovalnaVrsta = zmagovalnaVrsta(naPotezi);
 			naPotezi = naPotezi.nasprotnik();
 			return true;
 		}
@@ -81,98 +81,6 @@ public class Igra {
 		naPotezi = naPotezi.nasprotnik();
 	}
 	
-	public void sosed(int x, int y) {
-	 	//y
-		if(x+1 < Plosca.N) {
-			if(plosca.plosca[x+1][y]==katero) {
-				if(!vodja.Vodja.igra.obiskani.contains(new Koordinati(x+1,y))) {
-					vodja.Vodja.igra.vrsta.add(new Koordinati(x+1,y));}
-			}
-		}
-		if(x-1 >= 0) {
-			if(plosca.plosca[x-1][y]==katero) {
-				if(!vodja.Vodja.igra.obiskani.contains(new Koordinati(x-1,y))) {
-					vodja.Vodja.igra.vrsta.add(new Koordinati(x-1,y));}
-			}
-		}
-		
-		//y+1
-		if(y+1 < Plosca.N) {
-			if(plosca.plosca[x][y+1]==katero) {
-				if(!vodja.Vodja.igra.obiskani.contains(new Koordinati(x,y+1))) {
-					vodja.Vodja.igra.vrsta.add(new Koordinati(x,y+1));}
-			}
-		}
-		if(y+1 < Plosca.N && x-1 >= 0){
-			if(plosca.plosca[x-1][y+1]==katero) {
-				if(!vodja.Vodja.igra.obiskani.contains(new Koordinati(x-1,y+1))) {
-					vodja.Vodja.igra.vrsta.add(new Koordinati(x+1,y+1));}
-			}
-		}
-		
-		//y-1
-		if(y-1 >= 0) {
-			if(plosca.plosca[x][y-1]==katero) {
-				if(!vodja.Vodja.igra.obiskani.contains(new Koordinati(x,y-1))) {
-					vodja.Vodja.igra.vrsta.add(new Koordinati(x,y-1));}
-			}
-		}
-		if(y-1 >= 0 && x+1 < Plosca.N) {
-			if(plosca.plosca[x+1][y-1]==katero) {
-				if(!vodja.Vodja.igra.obiskani.contains(new Koordinati(x+1,y-1))) {
-					vodja.Vodja.igra.vrsta.add(new Koordinati(x+1,y-1));}
-			}
-		}	       	
-	}
-	
-	//preverimo ali je poteza zmagovalna
-	public boolean zmagovalniBfs() {
-		obiskani = new ArrayList<Koordinati>();
-		vrsta = new ArrayList<Koordinati>();
-		ArrayList<Koordinati> rob = new ArrayList<Koordinati>();
-		
-		if(naPotezi == Igralec.rdeci) {
-			katero = Polje.rdece;
-			for(int x=0; x < Plosca.N; x++) {
-				if(plosca.plosca[x][0] == katero){
-					if(x>0 && !rob.contains(new Koordinati(x-1,0))){
-						rob.add(new Koordinati(x,0));}
-					else {rob.add(new Koordinati(x,0));}
-				}
-			}
-		}
-		else {
-			katero = Polje.modro;
-			for(int y=0; y < Plosca.N; y++) {
-				if(plosca.plosca[0][y] == katero) {
-					if(y>0 && !rob.contains(new Koordinati(0,y-1))) {
-					rob.add(new Koordinati(0,y));}
-					else {rob.add(new Koordinati(0,y));}
-				}
-			}
-		}
-		
-		if(rob.isEmpty()) {return false;}
-
-		for (int i=0; i < rob.size(); i++) {
-			vrsta.add(rob.get(i));
-			
-			while (vrsta.size() > 0) {
-		    	Koordinati kandidat = vrsta.get(0);
-		       	obiskani.add(kandidat);
-		       	//sosedi kandidata, ki bodo Ĺˇli v vrsto	
-		       	sosed(kandidat.getX(),kandidat.getY());
-		       	vrsta.remove(0);
-			}
-			for (int j=0; j < obiskani.size(); j++) {
-	       		if(obiskani.get(j).getY()==Plosca.N-1 && katero == Polje.rdece) {
-	       			return true;}
-	       		else if(obiskani.get(j).getX()==Plosca.N-1 && katero == Polje.modro) {return true;}
-	       	}
-		}
-		return false;
-	}
-
 	//vrne stanje igre glede na metodo zmagovalna vrsta
 	public Stanje stanje() {
 		// Ali imamo zmagovalca?
@@ -214,11 +122,12 @@ public class Igra {
 
 /**
  * kako najti zmagovalno vrsto
- * vrsto isces za v sako zacetno vozlisce posebej rdec ce je y=0 in moder ce je x=0
+ * vrsto isces za vsako zacetno vozlisce posebej rdec ce je y=0 in moder ce je x=0
  * za vsako vozlisce si shranis starsa iz kje je prisel in potem jo za nazaj konstruiras
  * ce obstaja zmagovalna vrsta potem imamo zmagovalca in to je tisti, ki je bil ravno na vrsti
  */
 
+	
 
 	public List<Koordinati> zmagovalnaVrsta(Igralec igralec) {
 
@@ -246,14 +155,24 @@ public class Igra {
 						int y = polje.getY();
 
 						if (y == Plosca.N - 1) {
-							List<Koordinati> zmagovalnaVrsta = new ArrayList<>();
+							ArrayList<Koordinati> zmagovalnaVrsta = new ArrayList<>();
 
-							while (stars.get(polje) != polje ){
+							while (stars.get(polje) != polje){
 								Koordinati s = stars.get(polje);
 								zmagovalnaVrsta.add(polje);
 								polje = s;
 							}
-							return zmagovalnaVrsta;
+							vodja.Vodja.zmaga = true;
+							//append začetnega torej (y=0, x=...)
+							zmagovalnaVrsta.add(zacetek);
+							//poskrbimo, da le pot od y=0 do y=N-1 
+							boolean bool = true;
+							int k = 0;
+							while(bool) {
+								if(zmagovalnaVrsta.get(k).getY()==0) {bool = false;}
+								k++;
+							}
+							return zmagovalnaVrsta.subList(0, k);
 						}
 
 						int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
@@ -261,24 +180,23 @@ public class Igra {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							if (poteze.contains(sosed)){
+							if (sosedx>=0 && sosedy >= 0 && sosedx<Plosca.N && sosedy<Plosca.N) {
 								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-								queue.add(sosed);
-								visited[sosedx][sosedy] = true;
-								stars.put(sosed, polje);
-								}	
+									queue.add(sosed);
+									visited[sosedx][sosedy] = true;
+									stars.put(sosed, polje);	
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-
+		
 		else {
 			for (int i=0; i<Plosca.N; i++) {
 				LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
 				HashMap<Koordinati, Koordinati> stars = new HashMap<Koordinati, Koordinati>();
-
 				if (plosca.plosca[0][i] == Polje.modro) {
 					Koordinati zacetek = new Koordinati(0, i);
 					queue.add(zacetek);
@@ -289,29 +207,34 @@ public class Igra {
 						Koordinati polje = queue.pop();
 						int x = polje.getX();
 						int y = polje.getY();
-
 						if (x == Plosca.N - 1) {
-							List<Koordinati> zmagovalnaVrsta = new ArrayList<>();
-
+							ArrayList<Koordinati> zmagovalnaVrsta = new ArrayList<>();
 							while (stars.get(polje) != polje ){
 								Koordinati s = stars.get(polje);
 								zmagovalnaVrsta.add(polje);
 								polje = s;
 							}
-							return zmagovalnaVrsta;
+							vodja.Vodja.zmaga = true;
+							zmagovalnaVrsta.add(zacetek);
+							boolean bool = true;
+							int k = 0;
+							while(bool) {
+								if(zmagovalnaVrsta.get(k).getX()==0) {bool = false;}
+								k++;
+							}
+							return zmagovalnaVrsta.subList(0, k);
 						}
-
 						int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
 						for (int j=0; j<smeri.length; j++) {
 							int sosedx = x + smeri[j][0];
 							int sosedy = y + smeri[j][1];
 							Koordinati sosed = new Koordinati(sosedx, sosedy);
-							if (poteze.contains(sosed)) {
-								if (plosca.plosca[sosedx][sosedy] == Polje.rdece && !visited[sosedx][sosedy]) {
-								queue.add(sosed);
-								visited[sosedx][sosedy] = true;
-								stars.put(sosed, polje);	
-								}			
+							if (sosedx>=0 && sosedy >= 0 && sosedx<Plosca.N && sosedy<Plosca.N) {
+								if (plosca.plosca[sosedx][sosedy] == Polje.modro && !visited[sosedx][sosedy]) {
+									queue.add(sosed);
+									visited[sosedx][sosedy] = true;
+									stars.put(sosed, polje);		
+								}
 							}
 						}
 					}
