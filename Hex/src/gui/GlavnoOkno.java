@@ -86,7 +86,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		JMenu size_menu = new JMenu("Velikost");
 		menu_bar.add(size_menu);
 		
-		velikost5 = new JMenuItem("N = 5");
+		velikost5 = new JMenuItem("N = 3");
 		size_menu.add(velikost5);
 		velikost5.addActionListener(this);
 		
@@ -132,6 +132,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
 			Vodja.igramoNovoIgro();
+			Vodja.okno.repaint();
 			
 			
 		//klik v okno Velikost	
@@ -144,7 +145,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		}
 	}		
 	
-	public void osveziGUI() {
+
+	public void osveziStanje() {
 		if (Vodja.igra == null) {
 			status.setText("Igra ni v teku.");
 		}
@@ -154,15 +156,15 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				break;
 			case zmaga_rdeci:
-				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi());
-			//Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+				//pazi tukaj je trenutno nasprotnik zmagovalec ker odigraj(p) zamenja vloge POPRAVI
+				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				break;
 			case zmaga_modri:
-				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi());
-			//Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				break;
-			}	
+			}
 		}
+	polje.repaint();
 	}
 	
 }	

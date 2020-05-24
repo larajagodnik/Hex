@@ -5,20 +5,28 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 //import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.JPanel;
 
+import logika.Igra;
 import logika.Igralec;
 import logika.Koordinati;
 import logika.Plosca;
+import logika.Polje;
 import vodja.Vodja;
-
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
+	
+	//definiramo sredisca heksagonov
+	//ker jih bomo dodali ko gradimo igralno polje (dvojni for loop) bodo narejena z dvema matrikama 11x11
+	public static double[][] srediscax = new double[11][11];
+	public static double[][] srediscay = new double[11][11];
+	
 	
 	// konstruktor za igralno polje
 	public IgralnoPolje() {
@@ -109,10 +117,43 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		return koordinate;
 	}
 	
-	//definiramo sredisca heksagonov
-	//ker jih bomo dodali ko gradimo igralno polje (dvojni for loop) bodo narejena z dvema matrikama 11x11
-	public static double[][] srediscax = new double[11][11];
-	public static double[][] srediscay = new double[11][11];
+
+	//poiscemo najblizje sredisce torej najblizji heksagon in shrani indeks najblizjega sredisca, ter razdaljo
+	private int[] sredisce(int klikX, int klikY){
+		int[] minim = new int[3];
+		minim[0] = 0;
+		minim[1] = 0;
+		minim[2] = 0;
+		
+		double absX = 1000000;
+		double absY = 1000000;
+		
+		for(int y = 0; y < Plosca.N; y++) {
+			for (int x = 0; x < Plosca.N; x++) {
+				//iskanje najmanjse dolzine v 2D
+				double kandidatX = Math.pow(klikX-srediscax[x][y], 2);
+				double kandidatY = Math.pow(klikY-srediscay[x][y], 2);
+				//shranimo indeks ce razdalja do kandidata manjsa
+				//nato zamenjamo kandidata s testiranjem (absX oziroma absY)
+				double razdalja = Math.sqrt(kandidatX+kandidatY);
+				if(razdalja < Math.sqrt(absX+absY)) {
+					absX = kandidatX;
+					absY = kandidatY;
+					minim[0] = x;
+					minim[1] = y;
+					minim[2] = round(razdalja);
+				}
+			}
+		}
+		return minim;
+	}
+	
+	protected void pobarvaj(Graphics g2, int i, int j) {
+		//nas poligon je dolocen z oglisci okoli sredsica
+		int[][] poligon = oglisca(srediscax[i][j], srediscay[i][j]);
+		g2.fillPolygon(poligon[0], poligon[1], 6);
+	}
+
 	
 	//narisemo obmocje igre, to je 11x11 heksagonov
 	protected void paintComponent(Graphics g) {
@@ -120,6 +161,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		Graphics2D g2 = (Graphics2D)g;
 		
 		double w = stranica();
+		
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		
@@ -167,49 +209,32 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				
 			}	
 		}
-	}
-	
-	//poiscemo najblizje sredisce torej najblizji heksagon in shrani indeks najblizjega sredisca, ter razdaljo
-	private int[] sredisce(int klikX, int klikY){
-		int[] minim = new int[3];
-		minim[0] = 0;
-		minim[1] = 0;
-		minim[2] = 0;
 		
-		double absX = 10000;
-		double absY = 10000;
-		
-		for(int y = 0; y < Plosca.N; y++) {
-			for (int x = 0; x < Plosca.N; x++) {
-				//iskanje najmanjse dolzine v 2D
-				double kandidatX = Math.pow(klikX-srediscax[x][y], 2);
-				double kandidatY = Math.pow(klikY-srediscay[x][y], 2);
-				//shranimo indeks ce razdalja do kandidata manjsa
-				//nato zamenjamo kandidata s testiranjem (absX oziroma absY)
-				double razdalja = Math.sqrt(kandidatX+kandidatY);
-				if(razdalja < Math.sqrt(absX+absY)) {
-					absX = kandidatX;
-					absY = kandidatY;
-					minim[0] = x;
-					minim[1] = y;
-					minim[2] = round(razdalja);
+		Polje[][] plosca;;
+		if (Vodja.igra != null) {
+			plosca = Vodja.igra.getPlosca();
+			for (int i = 0; i < Plosca.N; i++) {
+				for (int j = 0; j < Plosca.N; j++) {
+					switch(plosca[i][j]) {
+					case rdece: 
+						g2.setColor(Color.RED);
+						pobarvaj(g2, i, j); 
+						break;
+					case modro: 
+						g2.setColor(Color.BLUE);
+						pobarvaj(g2, i, j); 
+						break;
+					default: break;
+					}
 				}
 			}
-		}
-		return minim;
+		}	
 	}
 	
-	protected void pobarvaj(Graphics g, int[] minim, int klikX, int klikY) {
-		//nas poligon je dolocen z oglisci okoli sredsica
-		int[][] poligon = oglisca(srediscax[minim[0]][minim[1]], srediscay[minim[0]][minim[1]]);
-		g.fillPolygon(poligon[0], poligon[1], 6);
-	}
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//preverim, da je clovek na vrsti, da ne more klikniti, če racunalnik na vrsti
-		if(vodja.Vodja.clovekNaVrsti == true) {
-			Graphics g = getGraphics();
+		if(vodja.Vodja.clovekNaVrsti) {
 			
 			//dobim pozicijo klika
 			int klikX = e.getX();
@@ -222,7 +247,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			
 			//da nismo kliknili izven igralnega polja
 			if(minim[2] < stranica()) {
-				
+				vodja.Vodja.igrajClovekovoPotezo(p);
 				//clovekova poteza (logika)
 				if(vodja.Vodja.igra.odigraj(p) == true) {
 					
@@ -259,7 +284,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 					Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 					}
 				pobarvaj(g,minim,klikX,klikY);
-				Vodja.igrajClovekovoPotezo(p);
 			}
 		}
 	}

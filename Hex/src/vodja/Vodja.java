@@ -14,9 +14,11 @@ public class Vodja {
 	public static Map<Igralec,KdoIgra> kdoIgra;
 	public static Igra igra = null;
 	public static boolean clovekNaVrsti = false;
-	public static gui.GlavnoOkno okno;
+	public static boolean zmaga;
+
 	
 	public static void igramoNovoIgro () {
+		zmaga = false;
 		igra = new Igra();
 		igramo();
 	}
@@ -42,12 +44,13 @@ public class Vodja {
 		}
 	}
 	
-	public static void igrajClovekovoPotezo(Koordinati poteza) {
-		System.out.println(poteza);
-		if (igra.odigraj(poteza)) clovekNaVrsti = false;
+
+	public static void igrajClovekovoPotezo(Koordinati p) {
+		if(igra.odigraj(p)) clovekNaVrsti = false;
 		igramo();
 	}
-	
+
+
 	// potrebno se napisat!
 	public static void igrajRacunalnikovoPotezo() {
 		
