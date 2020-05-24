@@ -5,16 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-//import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.JPanel;
 
-import logika.Igra;
-import logika.Igralec;
-import logika.Koordinati;
 import logika.Plosca;
 import logika.Polje;
 import vodja.Vodja;
@@ -233,7 +228,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//preverim, da je clovek na vrsti, da ne more klikniti, če racunalnik na vrsti
+		//preverim, da je clovek na vrsti, da ne more klikniti, ÄŤe racunalnik na vrsti
 		if(vodja.Vodja.clovekNaVrsti) {
 			
 			//dobim pozicijo klika
@@ -248,42 +243,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			//da nismo kliknili izven igralnega polja
 			if(minim[2] < stranica()) {
 				vodja.Vodja.igrajClovekovoPotezo(p);
-				//clovekova poteza (logika)
-				if(vodja.Vodja.igra.odigraj(p) == true) {
-					
-					//dolocimo barvo glede na to kdo je na potezi
-					if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
-						g.setColor(Color.RED);
-					}
-					else {
-						g.setColor(Color.BLUE);
-						}
-					
-					//pobarvamo primeren heksagon
-					pobarvaj(g,minim,klikX,klikY);
-					
-					if(vodja.Vodja.igra.zmagovalniBFS()==true) {
-						vodja.Vodja.zmaga = true;
-						vodja.Vodja.clovekNaVrsti = false;
-						vodja.Vodja.igramo();
-						}
-					else {
-						//zamenjam tistega, ki je na vrsti z nasprotnikom in osvezim stanje gui
-						vodja.Vodja.igra.naPotezi = vodja.Vodja.igra.naPotezi.nasprotnik();
-						vodja.Vodja.okno.osveziStanje();
-						
-						//clovekNaVrsti je false, saj ne vem ali je nasprotnik clovek
-						vodja.Vodja.clovekNaVrsti = false;
-						
-						//vrnem se nazaj na vodjo, ki skrbi za igro
-						vodja.Vodja.igramo();
-					}
-				}
-				else {
-					g.setColor(Color.RED);
-					Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
-					}
-				pobarvaj(g,minim,klikX,klikY);
 			}
 		}
 	}

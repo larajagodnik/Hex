@@ -2,7 +2,6 @@ package vodja;
 
 import java.util.Map;
 
-import gui.GlavnoOkno;
 import logika.Igra;
 import logika.Igralec;
 import splosno.KdoIgra;
@@ -13,9 +12,9 @@ public class Vodja {
 	public static Map<Igralec,VrstaIgralca> vrstaIgralca;
 	public static Map<Igralec,KdoIgra> kdoIgra;
 	public static Igra igra = null;
+	public static gui.GlavnoOkno okno;
 	public static boolean clovekNaVrsti = false;
 	public static boolean zmaga;
-
 	
 	public static void igramoNovoIgro () {
 		zmaga = false;
@@ -24,18 +23,18 @@ public class Vodja {
 	}
 	
 	public static void igramo () {
-		okno.osveziGUI();
+		okno.osveziStanje();
 		switch (igra.stanje()) {
-			case zmaga_rdeci: 
+			case zmaga_rdeci:
+				return;
 			case zmaga_modri: 
-				return; // odhajamo iz metode igramo
+				return;
 			case v_teku:
 				Igralec igralec = igra.naPotezi();
 				VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 				switch (vrstaNaPotezi) {
 				case C: 
 					clovekNaVrsti = true;
-					//ko clovek na vrsti pocakaj na input in ga preveri					
 					break;
 				case R:
 					igrajRacunalnikovoPotezo ();
@@ -44,7 +43,6 @@ public class Vodja {
 		}
 	}
 	
-
 	public static void igrajClovekovoPotezo(Koordinati p) {
 		if(igra.odigraj(p)) clovekNaVrsti = false;
 		igramo();

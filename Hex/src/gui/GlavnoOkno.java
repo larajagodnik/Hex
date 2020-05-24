@@ -52,7 +52,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
-		// statusna vrstica za sporočila
+		// statusna vrstica za sporoÄŤila
 		status.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
 		GridBagConstraints status_layout = new GridBagConstraints();
 		status_layout.gridx = 0;
@@ -66,19 +66,19 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		JMenu igra_menu = new JMenu("Nova igra");
 		menu_bar.add(igra_menu);
 
-		igraClovekRacunalnik = new JMenuItem("Človek – računalnik");
+		igraClovekRacunalnik = new JMenuItem("ÄŚlovek â€“ raÄŤunalnik");
 		igra_menu.add(igraClovekRacunalnik);
 		igraClovekRacunalnik.addActionListener(this);
 		
-		igraRacunalnikClovek = new JMenuItem("Računalnik – človek");
+		igraRacunalnikClovek = new JMenuItem("RaÄŤunalnik â€“ ÄŤlovek");
 		igra_menu.add(igraRacunalnikClovek);
 		igraRacunalnikClovek.addActionListener(this);
 		
-		igraClovekClovek = new JMenuItem("Človek – človek");
+		igraClovekClovek = new JMenuItem("ÄŚlovek â€“ ÄŤlovek");
 		igra_menu.add(igraClovekClovek);
 		igraClovekClovek.addActionListener(this);
 		
-		igraRacunalnikRacunalnik = new JMenuItem("Računalnik – računalnik");
+		igraRacunalnikRacunalnik = new JMenuItem("RaÄŤunalnik â€“ raÄŤunalnik");
 		igra_menu.add(igraRacunalnikRacunalnik);
 		igraRacunalnikRacunalnik.addActionListener(this);
 
@@ -92,8 +92,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		velikost11 = new JMenuItem("N = 11");
 		size_menu.add(velikost11);
-		velikost11.addActionListener(this);
-		
+		velikost11.addActionListener(this);	
 	}
 	
 	
@@ -105,18 +104,20 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
+			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("ÄŚlovek")); 
 			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
+			repaint();
 		} else if (e.getSource() == igraRacunalnikClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.C);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
 			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
-			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek")); 
+			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("ÄŚlovek")); 
 			Vodja.igramoNovoIgro();
-		}	else if (e.getSource() == igraRacunalnikClovek) {
+			repaint();
+		}	else if (e.getSource() == igraRacunalnikRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.R);
@@ -124,28 +125,32 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			//Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
 			//Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
+			repaint();
 		} else if (e.getSource() == igraClovekClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.modri, VrstaIgralca.C);
 			Vodja.kdoIgra = new EnumMap<Igralec,KdoIgra>(Igralec.class);
-			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
-			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
+			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("ÄŚlovek")); 
+			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("ÄŚlovek"));
 			Vodja.igramoNovoIgro();
 			Vodja.okno.repaint();
 			
 			
 		//klik v okno Velikost	
 		} else if (e.getSource() == velikost5) {
-			Plosca.N = 5;
+			Plosca.N = 3;
+			vodja.Vodja.okno.status.setText("Izberi igro");
 			repaint();
+			vodja.Vodja.clovekNaVrsti = false;
 		} else if (e.getSource() == velikost11) {
 			Plosca.N = 11;
+			vodja.Vodja.okno.status.setText("Izberi igro");
 			repaint();
+			vodja.Vodja.clovekNaVrsti = false;
 		}
-	}		
+	}
 	
-
 	public void osveziStanje() {
 		if (Vodja.igra == null) {
 			status.setText("Igra ni v teku.");
@@ -166,6 +171,5 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		}
 	polje.repaint();
 	}
-	
 }	
 
