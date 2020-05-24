@@ -161,6 +161,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				break;
 			case zmaga_rdeci:
+				System.out.println(vodja.Vodja.igra.zmagovalnaVrsta(Igralec.rdeci));
 				//pazi tukaj je trenutno nasprotnik zmagovalec ker odigraj(p) zamenja vloge POPRAVI
 				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				break;

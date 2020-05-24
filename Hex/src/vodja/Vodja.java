@@ -1,7 +1,6 @@
 package vodja;
 
 import java.util.Map;
-
 import logika.Igra;
 import logika.Igralec;
 import splosno.KdoIgra;
