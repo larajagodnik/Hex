@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -12,7 +13,6 @@ import javax.swing.JPanel;
 
 import logika.Igralec;
 import logika.Plosca;
-import gui.GlavnoOkno;
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -198,8 +198,10 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	protected void pobarvaj(Graphics g, int[] minim, int klikX, int klikY) {
 		//nas poligon je dolocen z oglisci okoli sredsica
+		super.pobarvaj(g, minim, klikX, klikY);
+		Graphics2D g2 = (Graphics2D)g;
 		int[][] poligon = oglisca(srediscax[minim[0]][minim[1]], srediscay[minim[0]][minim[1]]);
-		g.fillPolygon(poligon[0], poligon[1], 6);
+		g2.fillPolygon(poligon[0], poligon[1], 6);
 	}
 
 	@Override
@@ -207,6 +209,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		//preverim, da je clovek na vrsti, da ne more klikniti, če racunalnik na vrsti
 		if(vodja.Vodja.clovekNaVrsti == true) {
 			Graphics g = getGraphics();
+			Graphics2D g2 = (Graphics2D)g;
 			
 			//dobim pozicijo klika
 			int klikX = e.getX();
@@ -225,10 +228,10 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 					
 					//dolocimo barvo glede na to kdo je na potezi
 					if(vodja.Vodja.igra.naPotezi() == Igralec.rdeci) {
-						g.setColor(Color.RED);
+						g2.setColor(Color.RED);
 					}
 					else {
-						g.setColor(Color.BLUE);
+						g2.setColor(Color.BLUE);
 						}
 					
 					//pobarvamo primeren heksagon

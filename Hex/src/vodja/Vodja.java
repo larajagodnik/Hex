@@ -15,9 +15,10 @@ public class Vodja {
 	public static Igra igra = null;
 	public static gui.GlavnoOkno okno;
 	public static boolean clovekNaVrsti = false;
-	public static boolean zmaga = false;
+	public static boolean zmaga;
 	
 	public static void igramoNovoIgro () {
+		zmaga = false;
 		igra = new Igra();
 		igramo();
 	}

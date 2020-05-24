@@ -86,7 +86,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		JMenu size_menu = new JMenu("Velikost");
 		menu_bar.add(size_menu);
 		
-		velikost5 = new JMenuItem("N = 5");
+		velikost5 = new JMenuItem("N = 3");
 		size_menu.add(velikost5);
 		velikost5.addActionListener(this);
 		
@@ -134,7 +134,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
 			Vodja.igramoNovoIgro();
-			repaint();
+			Vodja.okno.repaint();
 			
 			
 		//klik v okno Velikost	
