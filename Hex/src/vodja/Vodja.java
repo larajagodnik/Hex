@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingWorker;
 
+import inteligenca.AlphaBeta;
 import inteligenca.RandomHex;
 import logika.Igra;
 import logika.Igralec;
@@ -55,7 +56,7 @@ public class Vodja {
 
 
 	// potrebno se napisat!
-	public static RandomHex racunalnikovaInteligenca = new RandomHex();
+	public static AlphaBeta racunalnikovaInteligenca = new AlphaBeta();
 	
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetkaIgra = igra;
@@ -72,7 +73,7 @@ public class Vodja {
 				try {poteza = get();} catch (Exception e) {};
 				if (igra == zacetkaIgra) {
 					igra.odigraj(poteza);
-					igramo ();
+					igramo();
 				}
 			}
 		};
