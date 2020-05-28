@@ -27,6 +27,10 @@ public class Vodja {
 		igramo();
 	}
 	
+	/**
+	 * glede na stanje igre se le ta ustrezno nadaljuje s potezo cloveka
+	 * ali racunalnika, oziroma se konca, ce imamo zmagovalca
+	 */
 	public static void igramo () {
 		okno.osveziStanje();
 		switch (igra.stanje()) {
@@ -48,14 +52,21 @@ public class Vodja {
 		}
 	}
 	
-	
+	// cpoteze, ki jih lahko naredi clovek
 	public static void igrajClovekovoPotezo(Koordinati p) {
 		if(igra.odigraj(p)) clovekNaVrsti = false;
 		igramo();
 	}
+	public static void razveljaviPotezo() {
+		igra.razveljavi();	
+	}
 
+	public static void swapRule() {
+		igra.swap();	
+	}
 
-	// potrebno se napisat!
+	
+	// racunalnikova igra
 	public static RandomHex racunalnikovaInteligenca = new RandomHex();
 	
 	public static void igrajRacunalnikovoPotezo() {
@@ -80,13 +91,4 @@ public class Vodja {
 		worker.execute();
 	}
 
-	public static void razveljaviPotezo() {
-		igra.razveljavi();
-		
-	}
-
-	public static void swapRule() {
-		igra.swap();
-		
-	}
 }

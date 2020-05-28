@@ -23,7 +23,9 @@ import splosno.KdoIgra;
 @SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame implements ActionListener {
 
+	// glavno igralno polje
 	public IgralnoPolje polje;
+	
 	//Statusna vrstica v spodnjem delu okna
 	public JLabel status;
 	
@@ -36,6 +38,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem velikost5;
 	private JMenuItem velikost11;
 	
+	// gumba
 	private JButton razveljavi;
 	private JButton swap;
 	
@@ -56,7 +59,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
-		// statusna vrstica za sporoÄŤila
+		// statusna vrstica za sporocila
 		status.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
 		GridBagConstraints status_layout = new GridBagConstraints();
 		status_layout.gridx = 0;
@@ -111,11 +114,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		swap.addActionListener(this);
 		swap.setVisible(false);
 	}
+
 	
-	
+	/**
+	 * akcije ob klikih na menuje in gumbe
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//klik v okno Nova igra
 		if (e.getSource() == igraClovekRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
@@ -124,7 +129,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
-			repaint();
 		} else if (e.getSource() == igraRacunalnikClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
@@ -133,7 +137,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek")); 
 			Vodja.igramoNovoIgro();
-			repaint();
 		}	else if (e.getSource() == igraRacunalnikRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.R); 
@@ -142,7 +145,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, Vodja.racunalnikovaInteligenca);
 			Vodja.kdoIgra.put(Igralec.modri, Vodja.racunalnikovaInteligenca);
 			Vodja.igramoNovoIgro();
-			repaint();
 		} else if (e.getSource() == igraClovekClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.rdeci, VrstaIgralca.C); 
@@ -151,13 +153,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.rdeci, new KdoIgra("Človek")); 
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
 			Vodja.igramoNovoIgro();
-			Vodja.okno.repaint();
-		} else if (e.getSource() == razveljavi) {
-			Vodja.razveljaviPotezo();
-		} else if (e.getSource() == swap) {
-			Vodja.swapRule();
-		
-			
+	
 		//klik v okno Velikost	
 		} else if (e.getSource() == velikost5) {
 			Plosca.N = 3;
@@ -170,31 +166,50 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			repaint();
 			vodja.Vodja.clovekNaVrsti = false;
 		}
+		
+		// klik na gumba razveljavi zadnjo potezo in uporabi swap pravilo
+		else if (e.getSource() == razveljavi) {
+			Vodja.razveljaviPotezo();
+		} else if (e.getSource() == swap) {
+			Vodja.swapRule();
+		}
+			
 		osveziStanje();
 	}
 	
+	/**
+	 * osvezi stanje na plosci (ob vsakem kliku miske)
+	 */
 	public void osveziStanje() {
+		// razveljavi in swap v splosnem nista vidna
 		razveljavi.setVisible(false);
 		swap.setVisible(false);
 		
+		// na zacetku igra ni v teku
 		if (Vodja.igra == null) {
 			status.setText("Igra ni v teku.");
 		}
 		else {
 			switch (Vodja.igra.stanje()) {
 			case v_teku:
+				// izpis igralca, ki je na potezi in njegova vrsta, za racunalnik metoda s katero igra
 				vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				
+				// gumb razveljavi postane viden ko je stevilo potez > 0
 				if (Vodja.vrstaIgralca.get(Igralec.rdeci) == VrstaIgralca.C && 
 						Vodja.vrstaIgralca.get(Igralec.modri) == VrstaIgralca.C &&
 						Vodja.igra.odigranePoteze.size() >= 1) {
 					razveljavi.setVisible(true);
+					
+					// za gumb swap mora biti stevilo potez enako 1
 					if (Vodja.igra.odigranePoteze.size()==1) {
 						swap.setVisible(true);
 					}
 				}
 				break;
+				
+			// izpis zmagovalca
 			case zmaga_rdeci:
-				//pazi tukaj je trenutno nasprotnik zmagovalec ker odigraj(p) zamenja vloge POPRAVI
 				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 				break;
 			case zmaga_modri:

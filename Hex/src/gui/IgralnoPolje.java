@@ -41,15 +41,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	//sirina crt
 	private final static double LINE_WIDTH = 0.08;
 	
-	/**
-	 profesor: return Math.min(getWidth(), getHeight()) / Plosca.N;
-	 nocemo da je cisto do roba zato getWidth()* 0.8
-	 imamo N sestkotnikov, po zamiku je njihova sirina = N+(N-1)/2
-	 in dodat mores se enega
-	 iz tega dobis a = sirina polja/(sqrt(3) * (N+(N-1)/2)+1) 
-	 visina vseh polj skupaj = (N+1)*3a/2 + a/2 -> a = visina*a/(3(N+1)+1)
-	**/
-	
 	
 	// kako dolga bo stranica glede na velikost polja
 	private double stranica() {
@@ -67,14 +58,13 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	 (po tem lahko ta oglisca povezemo s Polygon)
 	 dolocili bomo kako bo zamaknjeno oglisce, glede na katerega risemo 
 	 **/
-	
-	//oglisca (0 do 5) so v tabeli, najprej x nato y
-	/**
-	 x|0|1|2|3|4|5| tabela [][] { { },{ } } v prvem arrayu so x
-	 y|0|1|2|3|4|5|
-	   ... 
-	**/
 		
+	/**
+	 * 
+	 * @param x (x koordinata sredisca)
+	 * @param y (y koordinata sredisca)
+	 * @return tabela oglisc sestkotnika
+	 */
 	private int[][] oglisca(double x, double y) {
 		double a = stranica();
 		int[][] tabela = new int[2][6];
@@ -97,6 +87,12 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	// premik za x, y in vrstico
 	// risali bomo najprej prvo vrstico kjer se sredisce premika za x, sredisce vrstic od 2 naprej se zamakne za nek y in x
 	// dobimo koordniate sredisc
+	/**
+	 * 
+	 * @param x (x koordinata sredisca)
+	 * @param y (y koordinata sredisca)
+	 * @return koordinate ki predstavljajo sredisce premaknjenega sestkotnika
+	 */
 	private double[] premik(int x, int y) {
 		double a = stranica();
 		double xPremik = 2 * Math.cos(Math.PI/6)*a;
@@ -115,8 +111,13 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		return koordinate;
 	}
 	
-
-	//poiscemo najblizje sredisce torej najblizji heksagon in shrani indeks najblizjega sredisca, ter razdaljo
+	/**
+	 * 
+	 * @param klikX 
+	 * @param klikY
+	 * @return x in y koordinata sestkotnika, ki ga imamo ter razdalja
+	 * poiscemo najblizje sredisce torej najblizji heksagon in shrani indeks najblizjega sredisca, ter razdaljo
+	 */
 	private int[] sredisce(int klikX, int klikY){
 		int[] minim = new int[3];
 		minim[0] = 0;
@@ -146,7 +147,15 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		return minim;
 	}
 	
+	/**
+	 * 
+	 * @param g2
+	 * @param i (x koordinata sredisca)
+	 * @param j (y koordinta sredisca)
+	 * 
+	 */
 	protected void pobarvaj(Graphics g2, int i, int j) {
+		
 		//nas poligon je dolocen z oglisci okoli sredsica
 		int[][] poligon = oglisca(srediscax[i][j], srediscay[i][j]);
 		g2.fillPolygon(poligon[0], poligon[1], 6);
@@ -207,6 +216,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 				
 			}	
 		}
+		
 		Polje[][] plosca;;
 		if (Vodja.igra != null) {
 			plosca = Vodja.igra.getPlosca();
@@ -227,6 +237,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			}
 		}
 		
+		// oznaci zmagovalno vrsto
 		if(vodja.Vodja.zmaga) {
 			List<Koordinati> vrsta = vodja.Vodja.igra.zmagovalnaVrsta;
 			for(int k=0; k < vrsta.size(); k++) {

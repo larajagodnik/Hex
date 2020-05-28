@@ -13,14 +13,20 @@ public class Igra {
 	public ArrayList<Koordinati> obiskani = new ArrayList<Koordinati>();	
 	public List<Koordinati> zmagovalnaVrsta  = new ArrayList<Koordinati>();
 
-// konstuktor za igro
+
+	/**
+	 * konstruktor za igro
+	 */
 	public Igra() {
 		plosca = new logika.Plosca();
 		plosca.prazna();
 		naPotezi = Igralec.rdeci; // zacne rdeci
 	}
 	
-// Kopija igre
+	/**
+	 * kopija igre
+	 * @param igra
+	 */
 	public Igra(Igra igra) {
 		this.plosca = new Plosca();
 		for (int x = 0; x > Plosca.N; x++) {
@@ -45,8 +51,9 @@ public class Igra {
 		return naPotezi;
 	}
 	
-
-	//seznam moznih potez
+	/**
+	 * @return seznam moznih potez
+	 */
 	public List<Koordinati> moznePoteze() {
 		LinkedList<Koordinati> poteze = new LinkedList<Koordinati>();
 		for (int i = 0; i < Plosca.N; i++) {
@@ -68,6 +75,12 @@ public class Igra {
 
 **/	
 	// ce je mozno odigrati potezo se ta doda v seznam poteze, na vrsti pa bo nasprotnik
+	/**
+	 * 
+	 * @param p (koordinati)
+	 * @return true ali false, ce je potezo mozno odigati ali ne
+	 * zraven se shranjujejo se odigrane poteze
+	 */
 	public boolean odigraj(Koordinati p) {
 
 		int x = p.getX();
@@ -83,8 +96,9 @@ public class Igra {
 		else {return false;}
 	}
 	
-	// ne dela pravilno
-	// razveljavi zadnjo potezo, in zamenja nasprotnika da bo spet isti kot pred razveljavitvijo
+	/**
+	 * razveljavi zadnjo potezo
+	 */
 	public void razveljavi() {
 		Koordinati zadnjaPoteza = odigranePoteze.get(odigranePoteze.size()-1);
 		plosca.plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.prazno;
@@ -93,13 +107,20 @@ public class Igra {
 
 	}
 	
+	/**
+	 * swap rule
+	 * drugi igralec lahko izbrise prvi zeton igralca ki je odprl igro in postavi svojega
+	 */
 	public void swap() {
 		razveljavi();
 		naPotezi = naPotezi.nasprotnik();
 	}
 	
 	
-	//vrne stanje igre glede na metodo zmagovalna vrsta
+	/**
+	 * 
+	 * @return stanje igre; vrne zmagovalce ali igra v teku
+	 */
 	public Stanje stanje() {
 		// Ali imamo zmagovalca?
 		
@@ -146,7 +167,11 @@ public class Igra {
  */
 
 	
-
+	/**
+	 * 
+	 * @param igralec
+	 * @return zmagovalna vrsta
+	 */
 	public List<Koordinati> zmagovalnaVrsta(Igralec igralec) {
 
 		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
