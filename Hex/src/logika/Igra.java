@@ -8,6 +8,7 @@ public class Igra {
 	public logika.Plosca plosca;
 	public Igralec naPotezi;
 	public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
+	public LinkedList<Koordinati> odigranePoteze = new LinkedList<Koordinati>();
 	public ArrayList<Koordinati> vrsta = new ArrayList<Koordinati>();
 	public ArrayList<Koordinati> obiskani = new ArrayList<Koordinati>();	
 	public List<Koordinati> zmagovalnaVrsta  = new ArrayList<Koordinati>();
@@ -57,10 +58,18 @@ public class Igra {
 		}
 		return poteze;
 	}
+/**	
+	public List<Koordinati> odigranePoteze(Koordinati p){
+		LinkedList<Koordinati> odigrane = new LinkedList<Koordinati>();
+		odigrane.add(p);
+		return odigrane;
+		
+	}
 
-	
+**/	
 	// ce je mozno odigrati potezo se ta doda v seznam poteze, na vrsti pa bo nasprotnik
 	public boolean odigraj(Koordinati p) {
+
 		int x = p.getX();
 		int y = p.getY();
 		if (plosca.plosca[x][y] == Polje.prazno) {
@@ -68,18 +77,27 @@ public class Igra {
 			poteze.add(p);
 			zmagovalnaVrsta = zmagovalnaVrsta(naPotezi);
 			naPotezi = naPotezi.nasprotnik();
+			odigranePoteze.add(p);
 			return true;
 		}
 		else {return false;}
 	}
 	
+	// ne dela pravilno
 	// razveljavi zadnjo potezo, in zamenja nasprotnika da bo spet isti kot pred razveljavitvijo
 	public void razveljavi() {
-		Koordinati zadnjaPoteza = poteze.get(poteze.size()-1);
+		Koordinati zadnjaPoteza = odigranePoteze.get(odigranePoteze.size()-1);
 		plosca.plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.prazno;
-		poteze.remove(poteze.size()-1);
+		odigranePoteze.remove(odigranePoteze.size()-1);
+		naPotezi = naPotezi.nasprotnik();
+
+	}
+	
+	public void swap() {
+		razveljavi();
 		naPotezi = naPotezi.nasprotnik();
 	}
+	
 	
 	//vrne stanje igre glede na metodo zmagovalna vrsta
 	public Stanje stanje() {

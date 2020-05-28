@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -34,6 +35,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	
 	private JMenuItem velikost5;
 	private JMenuItem velikost11;
+	
+	private JButton razveljavi;
+	private JButton swap;
 	
 	public GlavnoOkno() {
 		this.setTitle("Hex");
@@ -93,6 +97,19 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		velikost11 = new JMenuItem("N = 11");
 		size_menu.add(velikost11);
 		velikost11.addActionListener(this);	
+		
+		//razveljavi in swap na voljo le, če igrata 2 človeka
+		// razveljavi
+		razveljavi = new JButton("Razveljavi zadnjo potezo");
+		menu_bar.add(razveljavi);
+		razveljavi.addActionListener(this);
+		razveljavi.setVisible(false);
+		
+		// swap rule
+		swap = new JButton("Uporabi swap pravilo");
+		menu_bar.add(swap);
+		swap.addActionListener(this);
+		swap.setVisible(false);
 	}
 	
 	
@@ -135,7 +152,11 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.kdoIgra.put(Igralec.modri, new KdoIgra("Človek"));
 			Vodja.igramoNovoIgro();
 			Vodja.okno.repaint();
-			
+		} else if (e.getSource() == razveljavi) {
+			Vodja.razveljaviPotezo();
+		} else if (e.getSource() == swap) {
+			Vodja.swapRule();
+		
 			
 		//klik v okno Velikost	
 		} else if (e.getSource() == velikost5) {
@@ -149,9 +170,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			repaint();
 			vodja.Vodja.clovekNaVrsti = false;
 		}
+		osveziStanje();
 	}
 	
 	public void osveziStanje() {
+		razveljavi.setVisible(false);
+		swap.setVisible(false);
+		
 		if (Vodja.igra == null) {
 			status.setText("Igra ni v teku.");
 		}
@@ -159,6 +184,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			switch (Vodja.igra.stanje()) {
 			case v_teku:
 				vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				if (Vodja.vrstaIgralca.get(Igralec.rdeci) == VrstaIgralca.C && 
+						Vodja.vrstaIgralca.get(Igralec.modri) == VrstaIgralca.C &&
+						Vodja.igra.odigranePoteze.size() >= 1) {
+					razveljavi.setVisible(true);
+					if (Vodja.igra.odigranePoteze.size()==1) {
+						swap.setVisible(true);
+					}
+				}
 				break;
 			case zmaga_rdeci:
 				//pazi tukaj je trenutno nasprotnik zmagovalec ker odigraj(p) zamenja vloge POPRAVI

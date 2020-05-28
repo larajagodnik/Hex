@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingWorker;
 
-import inteligenca.AlphaBeta;
 import inteligenca.RandomHex;
 import logika.Igra;
 import logika.Igralec;
@@ -49,6 +48,7 @@ public class Vodja {
 		}
 	}
 	
+	
 	public static void igrajClovekovoPotezo(Koordinati p) {
 		if(igra.odigraj(p)) clovekNaVrsti = false;
 		igramo();
@@ -56,7 +56,7 @@ public class Vodja {
 
 
 	// potrebno se napisat!
-	public static AlphaBeta racunalnikovaInteligenca = new AlphaBeta();
+	public static RandomHex racunalnikovaInteligenca = new RandomHex();
 	
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetkaIgra = igra;
@@ -78,5 +78,15 @@ public class Vodja {
 			}
 		};
 		worker.execute();
+	}
+
+	public static void razveljaviPotezo() {
+		igra.razveljavi();
+		
+	}
+
+	public static void swapRule() {
+		igra.swap();
+		
 	}
 }
