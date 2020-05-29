@@ -7,7 +7,8 @@ import splosno.Koordinati;
 public class Igra {
 	public logika.Plosca plosca;
 	public Igralec naPotezi;
-	public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
+	//public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
+	public ArrayList<Koordinati> potezeSwap = new ArrayList<Koordinati>();
 	public LinkedList<Koordinati> odigranePoteze = new LinkedList<Koordinati>();
 	public ArrayList<Koordinati> vrsta = new ArrayList<Koordinati>();
 	public ArrayList<Koordinati> obiskani = new ArrayList<Koordinati>();	
@@ -82,15 +83,14 @@ public class Igra {
 	 * zraven se shranjujejo se odigrane poteze
 	 */
 	public boolean odigraj(Koordinati p) {
-
 		int x = p.getX();
 		int y = p.getY();
 		if (plosca.plosca[x][y] == Polje.prazno) {
 			plosca.plosca[x][y] = naPotezi.getPolje();
-			poteze.add(p);
 			zmagovalnaVrsta = zmagovalnaVrsta(naPotezi);
 			naPotezi = naPotezi.nasprotnik();
 			odigranePoteze.add(p);
+			potezeSwap.add(p);
 			return true;
 		}
 		else {return false;}
@@ -112,8 +112,8 @@ public class Igra {
 	 * drugi igralec lahko izbrise prvi zeton igralca ki je odprl igro in postavi svojega
 	 */
 	public void swap() {
-		razveljavi();
-		naPotezi = naPotezi.nasprotnik();
+		Koordinati zadnjaPoteza = odigranePoteze.get(odigranePoteze.size()-1);
+		plosca.plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.prazno;
 	}
 	
 	

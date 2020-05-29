@@ -200,11 +200,11 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 						Vodja.vrstaIgralca.get(Igralec.modri) == VrstaIgralca.C &&
 						Vodja.igra.odigranePoteze.size() >= 1) {
 					razveljavi.setVisible(true);
-					
-					// za gumb swap mora biti stevilo potez enako 1
-					if (Vodja.igra.odigranePoteze.size()==1) {
-						swap.setVisible(true);
-					}
+				}
+				// za gumb swap mora biti stevilo potez enako 1, viden samo ce igrata 2 cloveka
+				if (Vodja.vrstaIgralca.get(Igralec.rdeci) == VrstaIgralca.C && 
+						Vodja.vrstaIgralca.get(Igralec.modri) == VrstaIgralca.C && Vodja.igra.potezeSwap.size()==1) {
+					swap.setVisible(true);
 				}
 				break;
 				

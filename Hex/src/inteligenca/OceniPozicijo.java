@@ -1,6 +1,9 @@
 package inteligenca;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 import logika.Igra;
 import logika.Igralec;
@@ -12,166 +15,118 @@ import splosno.Koordinati;
 public class OceniPozicijo {
 	
 	// Metoda oceniPozicijo za igro TicTacToe
-	public static int oceniPozicijo(Igra igra, Igralec jaz) {
-		int ocena = Integer.MAX_VALUE;
-		return ocena;
+	public static int oceniPozicijo(Igra igra, Igralec igralec) {
+		int ocenap = 0;
+		switch (igra.stanje()) {
+			case zmaga_rdeci: ocenap += (igralec == Igralec.rdeci ? Integer.MAX_VALUE : Integer.MIN_VALUE); break;
+			case zmaga_modri: ocenap += (igralec == Igralec.modri ? Integer.MAX_VALUE :Integer.MIN_VALUE); break;
+			
+			default:
 
-	}
-
-	
-	
-	public static int najkrajsaPotModra(Igra igra) {
-		int min = Integer.MAX_VALUE;
-		
-		for (int n=0; n<Plosca.N; n++) {
-			if (igra.plosca.plosca[Plosca.N-1][n] != Polje.rdece) {
-				int trenutni = najkrajsaModra(igra, Plosca.N-1, n);
-				if (trenutni < min) {
-					min = trenutni;
+				for (int vrstica = 0; vrstica < Plosca.N; vrstica++) {
+					int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(vrstica, 0));
+					int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, vrstica));			
+				
+					ocenap = (razdalja_rdeci - razdalja_modri);
 				}
-			}
-		}
-		return min;
-	}
-	
-	public static int najkrajsaPotRdeca(Igra igra) {
-		int min = Integer.MAX_VALUE;
-		
-		for (int n=0; n<Plosca.N; n++) {
-			if (igra.plosca.plosca[n][0] != Polje.rdece) {
-				int trenutni = najkrajsaRdeca(igra, n, 0);
-				if (trenutni < min) {
-					min = trenutni;
+				
+				if (igralec == Igralec.rdeci) {
+					return ocenap;
 				}
-			}
+				else if (igralec == Igralec.modri) {
+					return -ocenap;
+				}			
 		}
-		return min;
-	}
+		return Integer.MAX_VALUE;
 
+		
+	}
 	
-	public static int najkrajsaModra(Igra igra, int x, int y){
-		int[][] dolzina = new int[Plosca.N][Plosca.N];
+	public static int bfs(Igra igra, Igralec igralec, Koordinati k) {
+		int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
 		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
-		LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
+		int [][] dolzina = new int[Plosca.N][Plosca.N];
 		
 		for (int i=0; i<Plosca.N; i++) {
 			for (int j=0; j<Plosca.N; j++) {
-				dolzina[i][j] = Integer.MAX_VALUE;
 				visited[i][j] = false;
-				if (igra.plosca.plosca[x][y] != Polje.rdece) {
-					queue.add(new Koordinati(x, y));
-				}				
+				dolzina[i][j] = Integer.MAX_VALUE;
 			}
 		}
-		dolzina[x][y] = 0;
 		
-		while(queue != null) {
-			int min = Integer.MAX_VALUE;
-			Koordinati voz = null;
-			for (Koordinati u : queue) {
-				if (dolzina[u.getX()][u.getY()] < min) {
-					min = dolzina[u.getX()][u.getY()];
-					voz = u;
-				}
-			}
-			
-			//Koordinati vozlisce = voz;
-			queue.remove(voz);
-			dolzina[voz.getX()][voz.getY()] = Integer.MAX_VALUE;
-			
-			int vozx = voz.getX();
-			int vozy = voz.getY();
-			int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
-			for (int j=0; j<smeri.length; j++) {
-				int sosedx = x + smeri[j][0];
-				int sosedy = y + smeri[j][1];
-				
-				Koordinati sosed = new Koordinati(sosedx, sosedy);
-				if (queue.contains(sosed)){
-					if (igra.plosca.plosca[sosedx][sosedy] == Polje.modro) {
-						int razdalja = dolzina[vozx][vozy];
-						if (razdalja < dolzina[sosedx][sosedy]) {
-							dolzina[sosedx][sosedy] =  dolzina[vozx][vozy];
+		if (igralec == Igralec.rdeci) {
+			Queue<Koordinati> queue = new LinkedList<>();
+			dolzina[k.getX()][k.getY()] = 0;
+			visited[k.getX()][k.getY()] = true;
+			queue.add(k);
+			 
+			while (queue.size() > 0) {
+				Koordinati vozlisce = queue.remove();
+				int vozliscex = vozlisce.getX();
+				int vozliscey = vozlisce.getY();
+				for (int j=0; j<smeri.length; j++) {
+					int sosedx = vozliscex + smeri[j][0];
+					int sosedy = vozliscey+ smeri[j][1];
+					Koordinati sosed = new Koordinati(sosedx, sosedy);
+					if (sosedx>=0 && sosedy >= 0 && sosedx<Plosca.N && sosedy<Plosca.N && !visited[sosedx][sosedy]) {
+						visited[sosedx][sosedy] = true;
+						if (igra.plosca.plosca[sosedx][sosedy] == Polje.rdece) {
+							dolzina[sosedx][sosedy] = Math.min(dolzina[sosedx][sosedy], dolzina[vozliscex][vozliscey]);
+	                        queue.add(sosed);
+						}
+						else if (igra.plosca.plosca[sosedx][sosedy] == Polje.prazno) {
+							dolzina[sosedx][sosedy] = Math.min(dolzina[sosedx][sosedy], dolzina[vozliscex][vozliscey] + 1);
+	                        queue.add(sosed);
+						}
+						else {
+							dolzina[sosedx][sosedy] = Integer.MAX_VALUE;
+						}
+						
+						if (sosedy == Plosca.N - 1) {
+							return dolzina[sosedx][sosedy];
 						}
 					}
-					else {
-						int razdalja = dolzina[vozx][vozy] + 1;
-						if (razdalja < dolzina[sosedx][sosedy]) {
-							dolzina[sosedx][sosedy] =  dolzina[x][y] + 1;
-							min++;
-						}
-					}
-				}
-				if (sosedx == 0) {
-					System.out.println(min);
-					return min;
-				}
-			}	
+				}	 
+			}		
 		}
+		else {
+			Queue<Koordinati> queue = new LinkedList<>();
+			dolzina[k.getX()][k.getY()] = 0;
+			visited[k.getX()][k.getY()] = true;
+			queue.add(k);
+			 
+			while (queue.size() > 0) {
+				Koordinati vozlisce = queue.remove();
+				int vozliscex = vozlisce.getX();
+				int vozliscey = vozlisce.getY();
+				for (int j=0; j<smeri.length; j++) {
+					int sosedx = vozliscex + smeri[j][0];
+					int sosedy = vozliscey+ smeri[j][1];
+					Koordinati sosed = new Koordinati(sosedx, sosedy);
+					if (sosedx>=0 && sosedy >= 0 && sosedx<Plosca.N && sosedy<Plosca.N && !visited[sosedx][sosedy]) {
+						visited[sosedx][sosedy] = true;
+						if (igra.plosca.plosca[sosedx][sosedy] == Polje.modro) {
+							dolzina[sosedx][sosedy] = Math.min(dolzina[sosedx][sosedy], dolzina[vozliscex][vozliscey]);
+	                        queue.add(sosed);
+						}
+						else if (igra.plosca.plosca[sosedx][sosedy] == Polje.prazno) {
+							dolzina[sosedx][sosedy] = Math.min(dolzina[sosedx][sosedy], dolzina[vozliscex][vozliscey] + 1);
+	                        queue.add(sosed);
+						}
+						else {
+							dolzina[sosedx][sosedy] = Integer.MAX_VALUE;
+						}
+						
+						if (sosedx == Plosca.N - 1) {
+							return dolzina[sosedx][sosedy];
+						}
+					}
+				}	 
+			}
+		}		
 		return Integer.MAX_VALUE;
 	}
 	
-	public static int najkrajsaRdeca(Igra igra, int x, int y){
-		int[][] dolzina = new int[Plosca.N][Plosca.N];
-		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
-		LinkedList<Koordinati> queue = new LinkedList<Koordinati>();
-		
-		for (int i=0; i<Plosca.N; i++) {
-			for (int j=0; j<Plosca.N; j++) {
-				dolzina[i][j] = Integer.MAX_VALUE;
-				visited[i][j] = false;
-				if (igra.plosca.plosca[x][y] != Polje.rdece) {
-					queue.add(new Koordinati(x, y));
-				}				
-			}
-		}
-		dolzina[x][y] = 0;
-		
-		while(queue != null) {
-			int min = Integer.MAX_VALUE;
-			Koordinati voz = null;
-			for (Koordinati u : queue) {
-				if (dolzina[u.getX()][u.getY()] < min) {
-					min = dolzina[u.getX()][u.getY()];
-					voz = u;
-				}
-			}
-			
-			//Koordinati vozlisce = voz;
-			queue.remove(voz);
-			dolzina[voz.getX()][voz.getY()] = Integer.MAX_VALUE;
-			
-			int vozx = voz.getX();
-			int vozy = voz.getY();
-			int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
-			for (int j=0; j<smeri.length; j++) {
-				int sosedx = x + smeri[j][0];
-				int sosedy = y + smeri[j][1];
-				
-				Koordinati sosed = new Koordinati(sosedx, sosedy);
-				if (queue.contains(sosed)){
-					if (igra.plosca.plosca[sosedx][sosedy] == Polje.modro) {
-						int razdalja = dolzina[vozx][vozy];
-						if (razdalja < dolzina[sosedx][sosedy]) {
-							dolzina[sosedx][sosedy] =  dolzina[vozx][vozy];
-						}
-					}
-					else {
-						int razdalja = dolzina[vozx][vozy] + 1;
-						if (razdalja < dolzina[sosedx][sosedy]) {
-							dolzina[sosedx][sosedy] =  dolzina[x][y] + 1;
-							min++;
-						}
-					}
-				}
-				if (sosedy == Plosca.N) {
-					System.out.println(min);
-					return min;
-				}
-			}	
-		}
-		return Integer.MAX_VALUE;
-	}
-	
-
 }
+
+

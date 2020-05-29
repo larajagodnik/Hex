@@ -6,7 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingWorker;
 
-import inteligenca.RandomHex;
+import inteligenca.MiniMax;
+import inteligenca.Inteligenca;
 import logika.Igra;
 import logika.Igralec;
 import splosno.KdoIgra;
@@ -67,7 +68,7 @@ public class Vodja {
 
 	
 	// racunalnikova igra
-	public static RandomHex racunalnikovaInteligenca = new RandomHex();
+	public static Inteligenca racunalnikovaInteligenca = new Inteligenca();
 	
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetkaIgra = igra;
