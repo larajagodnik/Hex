@@ -20,7 +20,6 @@ public class Vodja {
 	public static gui.GlavnoOkno okno;
 	public static boolean clovekNaVrsti = false;
 	public static boolean zmaga;
-	public static Inteligenca racunalnikovaInteligenca = new Inteligenca();
 	
 	public static void igramoNovoIgro () {
 		zmaga = false;
@@ -68,7 +67,7 @@ public class Vodja {
 
 	
 	// racunalnikova igra
-	public static RandomHex racunalnikovaInteligenca = new RandomHex();
+	public static Inteligenca racunalnikovaInteligenca = new Inteligenca();
 	
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetkaIgra = igra;
