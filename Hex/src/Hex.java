@@ -10,4 +10,5 @@ public class Hex {
 		Vodja.okno = glavno_okno;
 	}
 
+	
 }
