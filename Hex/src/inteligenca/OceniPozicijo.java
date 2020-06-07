@@ -1,14 +1,13 @@
 package inteligenca;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
 import logika.Igra;
 import logika.Igralec;
 import logika.Plosca;
 import logika.Polje;
+import logika.Stanje;
 import splosno.Koordinati;
 
 
@@ -16,16 +15,54 @@ public class OceniPozicijo {
 	
 	// Metoda oceniPozicijo za igro TicTacToe
 	public static int oceniPozicijo(Igra igra, Igralec igralec) {
+		
+		System.out.println("Sem notri");
+		
 		int ocenap = 0;
+		
+		if (igra.stanje() == Stanje.zmaga_rdeci) {
+			if(igralec == Igralec.rdeci) {
+				ocenap = Integer.MAX_VALUE;
+			}
+			else {
+				ocenap = Integer.MIN_VALUE;
+			}
+		}
+		
+		else if (igra.stanje() == Stanje.zmaga_modri) {
+			if(igralec == Igralec.modri) {
+				ocenap = Integer.MAX_VALUE;
+			}
+			else {
+				ocenap = Integer.MIN_VALUE;
+			}
+		}
+		else {
+			for (int i = 0; i < Plosca.N; i++) {
+				int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(i, 0));
+				int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, i));			
+			
+				ocenap = (razdalja_rdeci - razdalja_modri);
+			}
+			
+			if (igralec == Igralec.rdeci) {
+				return ocenap;
+			}
+			else if (igralec == Igralec.modri) {
+				return -ocenap;
+			}			
+		}
+		
+		/**
 		switch (igra.stanje()) {
 			case zmaga_rdeci: ocenap += (igralec == Igralec.rdeci ? Integer.MAX_VALUE : Integer.MIN_VALUE); break;
 			case zmaga_modri: ocenap += (igralec == Igralec.modri ? Integer.MAX_VALUE :Integer.MIN_VALUE); break;
 			
 			default:
 
-				for (int vrstica = 0; vrstica < Plosca.N; vrstica++) {
-					int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(vrstica, 0));
-					int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, vrstica));			
+				for (int i = 0; i < Plosca.N; i++) {
+					int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(i, 0));
+					int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, i));			
 				
 					ocenap = (razdalja_rdeci - razdalja_modri);
 				}
@@ -37,6 +74,7 @@ public class OceniPozicijo {
 					return -ocenap;
 				}			
 		}
+		**/
 		return Integer.MAX_VALUE;
 
 		
@@ -89,6 +127,7 @@ public class OceniPozicijo {
 				}	 
 			}		
 		}
+		
 		else {
 			Queue<Koordinati> queue = new LinkedList<>();
 			dolzina[k.getX()][k.getY()] = 0;

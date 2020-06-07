@@ -5,9 +5,8 @@ import java.util.*;
 import splosno.Koordinati;
 
 public class Igra {
-	public logika.Plosca plosca;
+	public Plosca plosca;
 	public Igralec naPotezi;
-	//public ArrayList<Koordinati> poteze = new ArrayList<Koordinati>();
 	public ArrayList<Koordinati> potezeSwap = new ArrayList<Koordinati>();
 	public LinkedList<Koordinati> odigranePoteze = new LinkedList<Koordinati>();
 	public ArrayList<Koordinati> vrsta = new ArrayList<Koordinati>();
@@ -19,7 +18,7 @@ public class Igra {
 	 * konstruktor za igro
 	 */
 	public Igra() {
-		plosca = new logika.Plosca();
+		plosca = new Plosca();
 		plosca.prazna();
 		naPotezi = Igralec.rdeci; // zacne rdeci
 	}
@@ -30,12 +29,13 @@ public class Igra {
 	 */
 	public Igra(Igra igra) {
 		this.plosca = new Plosca();
-		for (int x = 0; x > Plosca.N; x++) {
+		for (int x = 0; x < Plosca.N; x++) {
 			for (int y = 0; y < Plosca.N; y++) {
-				this.plosca.plosca[x][y] = plosca.plosca[x][y];
+				this.plosca.plosca[x][y] = igra.plosca.plosca[x][y];
 			}
 		}
 		this.naPotezi = igra.naPotezi;
+		this.odigranePoteze = igra.odigranePoteze;
 	}
 	
 	/**
@@ -66,15 +66,7 @@ public class Igra {
 		}
 		return poteze;
 	}
-/**	
-	public List<Koordinati> odigranePoteze(Koordinati p){
-		LinkedList<Koordinati> odigrane = new LinkedList<Koordinati>();
-		odigrane.add(p);
-		return odigrane;
-		
-	}
 
-**/	
 	// ce je mozno odigrati potezo se ta doda v seznam poteze, na vrsti pa bo nasprotnik
 	/**
 	 * 

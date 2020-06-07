@@ -68,14 +68,14 @@ public class Vodja {
 
 	
 	// racunalnikova igra
-	public static Inteligenca racunalnikovaInteligenca = new Inteligenca();
+	public static MiniMax racunalnikovaInteligenca = new MiniMax();
 	
 	public static void igrajRacunalnikovoPotezo() {
-		Igra zacetkaIgra = igra;
+		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
 			@Override
 			protected Koordinati doInBackground() {
-				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
+				//try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
 				Koordinati poteza = racunalnikovaInteligenca.izberiPotezo(igra);
 				return poteza;
 			}
@@ -83,7 +83,7 @@ public class Vodja {
 			protected void done () {
 				Koordinati poteza = null;
 				try {poteza = get();} catch (Exception e) {};
-				if (igra == zacetkaIgra) {
+				if (igra == zacetnaIgra) {
 					igra.odigraj(poteza);
 					igramo();
 				}
