@@ -39,6 +39,8 @@ public class OceniPozicijo {
 		}
 		else {
 			for (int i = 0; i < Plosca.N; i++) {
+				
+				
 				int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(i, 0));
 				int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, i));			
 			

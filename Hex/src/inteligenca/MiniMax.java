@@ -48,9 +48,9 @@ public class MiniMax extends KdoIgra {
 			ocena = ZMAGA;
 		}
 		
-
 		List<Koordinati> moznePoteze = igra.moznePoteze();
 		Koordinati kandidat = moznePoteze.get(0);
+		
 		for (Koordinati p: moznePoteze) {
 			System.out.println("p " + p);
 			Igra kopijaIgre = new Igra(igra);
@@ -60,7 +60,7 @@ public class MiniMax extends KdoIgra {
 			int ocenap;
 			
 		  // napisala brez switch da vidim kaj se dogaja
-			/**
+			
 			System.out.println("stanje " + igra.stanje());
 			System.out.println("kopija stanje " + kopijaIgre.stanje());
 			
@@ -97,8 +97,8 @@ public class MiniMax extends KdoIgra {
 					ocenap = alphabetaPoteze (kopijaIgre, globina-1, alpha, beta, jaz).ocena;
 				}
 			}
-			**/
 			
+			/**
 			switch (kopijaIgre.stanje()) {
 			case zmaga_rdeci: ocenap = (jaz == Igralec.rdeci ? ZMAGA : ZGUBA); break;
 			case zmaga_modri: ocenap = (jaz == Igralec.modri ? ZMAGA : ZGUBA); break;
@@ -107,7 +107,7 @@ public class MiniMax extends KdoIgra {
 				if (globina == 1) ocenap = OceniPozicijo.oceniPozicijo(kopijaIgre, jaz);
 				else ocenap = alphabetaPoteze (kopijaIgre, globina-1, alpha, beta, jaz).ocena;
 			}
-			
+			**/
 			
 			if (igra.naPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
