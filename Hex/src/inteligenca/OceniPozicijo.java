@@ -15,8 +15,7 @@ public class OceniPozicijo {
 	
 	// Metoda oceniPozicijo za igro TicTacToe
 	public static int oceniPozicijo(Igra igra, Igralec igralec) {
-		
-		System.out.println("Sem notri");
+
 		
 		int ocenap = 0;
 		
@@ -42,9 +41,14 @@ public class OceniPozicijo {
 				
 				
 				int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(i, 0));
-				int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, i));			
+				int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, i));		
+				
+			//	System.out.println("razdalja rdec " + razdalja_rdeci);
+			//	System.out.println("razdalja moder " + razdalja_modri);
 			
 				ocenap = (razdalja_rdeci - razdalja_modri);
+				
+		//		System.out.println("rdec-moder " + ocenap);
 			}
 			
 			if (igralec == Igralec.rdeci) {
@@ -127,7 +131,8 @@ public class OceniPozicijo {
 						}
 					}
 				}	 
-			}		
+			}
+			return Integer.MAX_VALUE;
 		}
 		
 		else {
@@ -164,7 +169,7 @@ public class OceniPozicijo {
 					}
 				}	 
 			}
-		}		
+		}
 		return Integer.MAX_VALUE;
 	}
 	

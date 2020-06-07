@@ -29,18 +29,18 @@ public class MiniMax extends KdoIgra {
 	}
 	
 	public Koordinati izberiPotezo (Igra igra) {
-		System.out.println("odigral sem " + alphabetaPoteze(igra, this.globina, ZGUBA, ZMAGA, igra.naPotezi()).poteza);
+		//System.out.println("odigral sem " + alphabetaPoteze(igra, this.globina, ZGUBA, ZMAGA, igra.naPotezi()).poteza);
 		return alphabetaPoteze(igra, this.globina, ZGUBA, ZMAGA, igra.naPotezi()).poteza;
 	}
 	
 	public static OcenjenaPoteza alphabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
 		int ocena;
 		
-		System.out.println("globina " + globina);
+		//System.out.println("globina " + globina);
 		
 		// Če sem računalnik, maksimiramo oceno z začetno oceno ZGUBA
 		// Če sem pa človek, minimiziramo oceno z začetno oceno ZMAGA
-		System.out.println("na potezi " + igra.naPotezi() );
+		//System.out.println("na potezi " + igra.naPotezi() );
 		if (igra.naPotezi() == jaz) {
 			ocena = ZGUBA;
 		}
@@ -51,18 +51,19 @@ public class MiniMax extends KdoIgra {
 		List<Koordinati> moznePoteze = igra.moznePoteze();
 		Koordinati kandidat = moznePoteze.get(0);
 		
+		//System.out.println("kandidat " + kandidat);
+		
 		for (Koordinati p: moznePoteze) {
-			System.out.println("p " + p);
+			
+		//	System.out.println("p " + p);
+			
 			Igra kopijaIgre = new Igra(igra);
 			kopijaIgre.odigraj(p);
 			
-			System.out.println("kopija na potezi " + kopijaIgre.naPotezi() );
+		//	System.out.println("kopija na potezi " + kopijaIgre.naPotezi() );
 			int ocenap;
 			
 		  // napisala brez switch da vidim kaj se dogaja
-			
-			System.out.println("stanje " + igra.stanje());
-			System.out.println("kopija stanje " + kopijaIgre.stanje());
 			
 			if (kopijaIgre.stanje() == Stanje.zmaga_rdeci) {
 				if(jaz == Igralec.rdeci) {
@@ -72,12 +73,10 @@ public class MiniMax extends KdoIgra {
 					ocenap = ZGUBA;
 				}
 				
-				System.out.println("ocenap " + ocenap);
+			//	System.out.println("ocenap " + ocenap);
 			}
 			
 			else if (kopijaIgre.stanje() == Stanje.zmaga_modri) {
-				
-				System.out.println("zmaga modri");
 				
 				if(jaz == Igralec.modri) {
 					ocenap = ZMAGA;
@@ -88,12 +87,12 @@ public class MiniMax extends KdoIgra {
 			}
 			else {
 				if (globina == 1) {
-					System.out.println("ocenjujem1");
+			//		System.out.println("ocenjujem1");
 					
 					 ocenap = OceniPozicijo.oceniPozicijo(kopijaIgre, jaz);
 				}
 				else {
-					System.out.println("ocenjujem2");
+			//		System.out.println("ocenjujem2");
 					ocenap = alphabetaPoteze (kopijaIgre, globina-1, alpha, beta, jaz).ocena;
 				}
 			}
@@ -124,8 +123,8 @@ public class MiniMax extends KdoIgra {
 			}
 			if (alpha >= beta) // Izstopimo iz "for loop", saj ostale poteze ne pomagajo
 				return new OcenjenaPoteza (kandidat, ocena);
-			System.out.println("ocena " + ocena);
-			System.out.println("ocenap " + ocenap);
+		//	System.out.println("ocena " + ocena);
+		//	System.out.println("ocenap " + ocenap);
 		}
 		return new OcenjenaPoteza (kandidat, ocena);
 		

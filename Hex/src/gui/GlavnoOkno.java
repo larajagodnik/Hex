@@ -156,7 +156,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	
 		//klik v okno Velikost	
 		} else if (e.getSource() == velikost5) {
-			Plosca.N = 3;
+			Plosca.N = 5;
 			vodja.Vodja.okno.status.setText("Izberi igro");
 			repaint();
 			vodja.Vodja.clovekNaVrsti = false;
