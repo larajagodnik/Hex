@@ -12,6 +12,7 @@ public class Igra {
 	public ArrayList<Koordinati> vrsta = new ArrayList<Koordinati>();
 	public ArrayList<Koordinati> obiskani = new ArrayList<Koordinati>();	
 	public List<Koordinati> zmagovalnaVrsta  = new ArrayList<Koordinati>();
+	public static boolean zmaga = false;
 
 
 	/**
@@ -118,15 +119,14 @@ public class Igra {
 		
 		//ce na vrsti rdeci in zmaga, v resnici zmaga modri, ker odigraj(p) zamenjal kdo je naPotezi
 		
-		
 		if (naPotezi == Igralec.rdeci) {
-			if (vodja.Vodja.zmaga == true) {
+			if (zmaga == true) {
 				return Stanje.zmaga_rdeci;
 			}
 		}	
 		
 		else if (naPotezi == Igralec.modri) {
-			if (vodja.Vodja.zmaga == true) {
+			if (zmaga == true) {
 				return Stanje.zmaga_modri;
 			}
 		}
@@ -197,7 +197,7 @@ public class Igra {
 								zmagovalnaVrsta.add(polje);
 								polje = s;
 							}
-							vodja.Vodja.zmaga = true;
+							zmaga = true;
 							//append začetnega torej (y=0, x=...)
 							zmagovalnaVrsta.add(zacetek);
 							//poskrbimo, da le pot od y=0 do y=N-1 
@@ -249,7 +249,7 @@ public class Igra {
 								zmagovalnaVrsta.add(polje);
 								polje = s;
 							}
-							vodja.Vodja.zmaga = true;
+							zmaga = true;
 							zmagovalnaVrsta.add(zacetek);
 							boolean bool = true;
 							int k = 0;
