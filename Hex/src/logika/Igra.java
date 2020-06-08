@@ -36,7 +36,7 @@ public class Igra {
 			}
 		}
 		this.naPotezi = igra.naPotezi;
-		this.odigranePoteze = igra.odigranePoteze;
+		//this.odigranePoteze = igra.odigranePoteze;
 	}
 	
 	/**

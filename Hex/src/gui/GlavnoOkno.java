@@ -28,6 +28,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	
 	//Statusna vrstica v spodnjem delu okna
 	public JLabel status;
+	public JLabel stpotez;
 	
 	// Izbire v menujih
 	private JMenuItem igraClovekRacunalnik;
@@ -49,6 +50,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 
         polje = new IgralnoPolje();
         status = new JLabel("Izberi igro");
+        stpotez = new JLabel("Število odigranih potez je 0");
         
         // polje
 		GridBagConstraints polje_layout = new GridBagConstraints();
@@ -59,11 +61,20 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.weighty = 1.0;
 		getContentPane().add(polje, polje_layout);
 		
+		
+		// statusna vrstica za stevilo odigranih potez
+		stpotez.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
+		GridBagConstraints stpotez_layout = new GridBagConstraints();
+		stpotez_layout.gridx = 0;
+		stpotez_layout.gridy = 1;
+		stpotez_layout.anchor = GridBagConstraints.CENTER;
+		getContentPane().add(stpotez, stpotez_layout);
+		
 		// statusna vrstica za sporocila
 		status.setFont(new Font(status.getFont().getName(), status.getFont().getStyle(), 20));
 		GridBagConstraints status_layout = new GridBagConstraints();
 		status_layout.gridx = 0;
-		status_layout.gridy = 1;
+		status_layout.gridy = 2;
 		status_layout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status, status_layout);
 		
@@ -193,7 +204,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			switch (Vodja.igra.stanje()) {
 			case v_teku:
 				// izpis igralca, ki je na potezi in njegova vrsta, za racunalnik metoda s katero igra
-				vodja.Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
+				Vodja.okno.stpotez.setText("Število odigranih potez je " + Vodja.igra.odigranePoteze.size());
+				Vodja.okno.status.setText("Na potezi je " + Vodja.igra.naPotezi() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi()).ime());
 				
 				// gumb razveljavi postane viden ko je stevilo potez > 0
 				if (Vodja.vrstaIgralca.get(Igralec.rdeci) == VrstaIgralca.C && 
@@ -210,10 +222,12 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				
 			// izpis zmagovalca
 			case zmaga_rdeci:
-				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+				Vodja.okno.stpotez.setText("Število odigranih potez je " + Vodja.igra.odigranePoteze.size());
+				Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 				break;
 			case zmaga_modri:
-				vodja.Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
+				Vodja.okno.stpotez.setText("Število odigranih potez je " + Vodja.igra.odigranePoteze.size());
+				Vodja.okno.status.setText("Zmagal je " + Vodja.igra.naPotezi().nasprotnik() + " - " + Vodja.kdoIgra.get(Vodja.igra.naPotezi().nasprotnik()).ime());
 				break;
 			}
 		}

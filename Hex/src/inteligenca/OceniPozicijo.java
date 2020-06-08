@@ -18,7 +18,7 @@ public class OceniPozicijo {
 
 		
 		int ocenap = 0;
-		
+		/**
 		if (igra.stanje() == Stanje.zmaga_rdeci) {
 			if(igralec == Igralec.rdeci) {
 				ocenap = Integer.MAX_VALUE;
@@ -40,8 +40,8 @@ public class OceniPozicijo {
 			for (int i = 0; i < Plosca.N; i++) {
 				
 				
-				int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(i, 0));
-				int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, i));		
+				int razdalja_rdeci = bfs(igra, Igralec.rdeci);
+				int razdalja_modri = bfs(igra, Igralec.modri);		
 				
 			//	System.out.println("razdalja rdec " + razdalja_rdeci);
 			//	System.out.println("razdalja moder " + razdalja_modri);
@@ -58,35 +58,36 @@ public class OceniPozicijo {
 				return -ocenap;
 			}			
 		}
+		**/
 		
-		/**
 		switch (igra.stanje()) {
 			case zmaga_rdeci: ocenap += (igralec == Igralec.rdeci ? Integer.MAX_VALUE : Integer.MIN_VALUE); break;
 			case zmaga_modri: ocenap += (igralec == Igralec.modri ? Integer.MAX_VALUE :Integer.MIN_VALUE); break;
 			
 			default:
 
-				for (int i = 0; i < Plosca.N; i++) {
-					int razdalja_rdeci = bfs(igra, Igralec.rdeci, new Koordinati(i, 0));
-					int razdalja_modri = bfs(igra, Igralec.modri, new Koordinati(0, i));			
-				
-					ocenap = (razdalja_rdeci - razdalja_modri);
-				}
-				
+				int razdalja_rdeci = bfs(igra, Igralec.rdeci);
+				int razdalja_modri = bfs(igra, Igralec.modri);			
+			
+				ocenap = razdalja_rdeci - razdalja_modri;
+				return ocenap;
+				/**
 				if (igralec == Igralec.rdeci) {
 					return ocenap;
 				}
-				else if (igralec == Igralec.modri) {
+				else {
 					return -ocenap;
-				}			
+				}	
+				**/		
 		}
-		**/
-		return Integer.MAX_VALUE;
+		return ocenap;
+		
+		//return Integer.MAX_VALUE;
 
 		
 	}
 	
-	public static int bfs(Igra igra, Igralec igralec, Koordinati k) {
+	public static int bfs(Igra igra, Igralec igralec) {
 		int[][] smeri = { {0,1}, {0,-1}, {-1,0}, {-1,1}, {1,-1}, {1,0} };
 		boolean[][] visited = new boolean[Plosca.N][Plosca.N];
 		int [][] dolzina = new int[Plosca.N][Plosca.N];
@@ -100,28 +101,36 @@ public class OceniPozicijo {
 		
 		if (igralec == Igralec.rdeci) {
 			Queue<Koordinati> queue = new LinkedList<>();
-			dolzina[k.getX()][k.getY()] = 0;
-			visited[k.getX()][k.getY()] = true;
-			queue.add(k);
+			for (int i=0; i<Plosca.N; i++) {
+				dolzina[i][0] = 0;
+				visited[i][0] = true;
+				queue.add(new Koordinati(i, 0));
+			}
+			
 			 
 			while (queue.size() > 0) {
 				Koordinati vozlisce = queue.remove();
 				int vozliscex = vozlisce.getX();
 				int vozliscey = vozlisce.getY();
+				
 				for (int j=0; j<smeri.length; j++) {
 					int sosedx = vozliscex + smeri[j][0];
 					int sosedy = vozliscey+ smeri[j][1];
 					Koordinati sosed = new Koordinati(sosedx, sosedy);
+					
 					if (sosedx>=0 && sosedy >= 0 && sosedx<Plosca.N && sosedy<Plosca.N && !visited[sosedx][sosedy]) {
 						visited[sosedx][sosedy] = true;
+						
 						if (igra.plosca.plosca[sosedx][sosedy] == Polje.rdece) {
 							dolzina[sosedx][sosedy] = Math.min(dolzina[sosedx][sosedy], dolzina[vozliscex][vozliscey]);
 	                        queue.add(sosed);
 						}
+						
 						else if (igra.plosca.plosca[sosedx][sosedy] == Polje.prazno) {
 							dolzina[sosedx][sosedy] = Math.min(dolzina[sosedx][sosedy], dolzina[vozliscex][vozliscey] + 1);
 	                        queue.add(sosed);
 						}
+						
 						else {
 							dolzina[sosedx][sosedy] = Integer.MAX_VALUE;
 						}
@@ -137,9 +146,11 @@ public class OceniPozicijo {
 		
 		else {
 			Queue<Koordinati> queue = new LinkedList<>();
-			dolzina[k.getX()][k.getY()] = 0;
-			visited[k.getX()][k.getY()] = true;
-			queue.add(k);
+			for (int i=0; i<Plosca.N; i++) {
+				dolzina[0][i] = 0;
+				visited[0][i] = true;
+				queue.add(new Koordinati(0, i));
+			}
 			 
 			while (queue.size() > 0) {
 				Koordinati vozlisce = queue.remove();
