@@ -16,6 +16,7 @@ import logika.Plosca;
 import logika.Polje;
 import splosno.Koordinati;
 import vodja.Vodja;
+import logika.Igra;
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
@@ -238,7 +239,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		}
 		
 		// oznaci zmagovalno vrsto
-		if(vodja.Vodja.zmaga) {
+		if(Igra.zmaga) {
 			List<Koordinati> vrsta = vodja.Vodja.igra.zmagovalnaVrsta;
 			for(int k=0; k < vrsta.size(); k++) {
 				int i = vrsta.get(k).getX();
