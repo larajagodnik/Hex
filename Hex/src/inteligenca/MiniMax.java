@@ -4,6 +4,7 @@ package inteligenca;
 import java.util.List;
 
 import logika.Igra;
+
 import logika.Polje;
 import splosno.Koordinati;
 import splosno.KdoIgra;
@@ -36,6 +37,7 @@ public class MiniMax extends KdoIgra {
 		return poteza;
 	}
 	
+
 	public static int oceni(Igra igra, int globina, boolean isceMax) {
 		if(igra.zmagovalnaVrsta != null) {
 			if(!isceMax) {
