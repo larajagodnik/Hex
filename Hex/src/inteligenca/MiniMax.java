@@ -2,6 +2,7 @@ package inteligenca;
 import java.util.List;
 import logika.Igra;
 import logika.Igralec;
+import logika.Plosca;
 import logika.Polje;
 import splosno.Koordinati;
 
@@ -23,7 +24,32 @@ public class MiniMax extends Inteligenca {
 
 	// izbere najboljso potezo
 	public Koordinati izberiPotezo (Igra igra) {
-		return alphabetaPoteze(igra, this.globina, ZGUBA, ZMAGA, igra.naPotezi()).poteza;
+		
+		boolean prazen = true;
+
+		for (int i=0;i<Plosca.N;i++) {
+			for (int j=0; j<Plosca.N;j++) {
+				if (igra.plosca.plosca[i][j]!=Polje.prazno) {
+					prazen = false;
+				}
+			}
+		}
+		if (prazen) {
+			if(Plosca.N%2==0) {
+				Koordinati p = new Koordinati((Plosca.N-2)/2,(Plosca.N-2)/2);
+				prazen = true;
+				return p;
+			}
+			else{
+				Koordinati p = new Koordinati((Plosca.N-1)/2,(Plosca.N-1)/2);
+				prazen = true;
+				return p;
+			}
+		}
+		else {
+	
+			return alphabetaPoteze(igra, this.globina, ZGUBA, ZMAGA, igra.naPotezi()).poteza;
+		}
 	}
 
 	public static OcenjenaPoteza alphabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
@@ -42,7 +68,13 @@ public class MiniMax extends Inteligenca {
 		
 		for (Koordinati p: moznePoteze) {
 			Igra kopijaIgre = new Igra(igra);
-			kopijaIgre.plosca.plosca[p.getX()][p.getY()]=Polje.rdece;
+			if (jaz == Igralec.rdeci) {
+				kopijaIgre.plosca.plosca[p.getX()][p.getY()]=Polje.modro;
+			}
+			else {
+				kopijaIgre.plosca.plosca[p.getX()][p.getY()]=Polje.rdece;
+			}
+			
 			int ocenap;
 			
 			switch (kopijaIgre.stanje()) {
