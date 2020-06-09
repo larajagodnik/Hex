@@ -3,7 +3,9 @@ package vodja;
 import java.util.Map;
 import javax.swing.SwingWorker;
 
+import inteligenca.Inteligenca;
 import inteligenca.MiniMax;
+import inteligenca.RandomHex;
 import logika.Igra;
 import logika.Igralec;
 import splosno.KdoIgra;
@@ -49,7 +51,7 @@ public class Vodja {
 		}
 	}
 	
-	// cpoteze, ki jih lahko naredi clovek
+	// poteze, ki jih lahko naredi clovek
 	public static void igrajClovekovoPotezo(Koordinati p) {
 		if(igra.odigraj(p)) clovekNaVrsti = false;
 		igramo();
@@ -63,8 +65,8 @@ public class Vodja {
 	}
 
 	
-	// racunalnikova igra
-	public static MiniMax racunalnikovaInteligenca = new MiniMax();
+	// racunalnikova igra - minimax z globino 3
+	public static Inteligenca racunalnikovaInteligenca = new MiniMax(4);
 	
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetnaIgra = igra;
