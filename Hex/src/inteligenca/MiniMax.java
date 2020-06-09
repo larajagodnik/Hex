@@ -5,6 +5,7 @@ import java.util.List;
 
 import logika.Igra;
 import logika.Igralec;
+import logika.Polje;
 import logika.Stanje;
 import splosno.Koordinati;
 import splosno.KdoIgra;
@@ -53,7 +54,12 @@ public class MiniMax extends KdoIgra {
 		for (Koordinati p: moznePoteze) {
 			
 			Igra kopijaIgre = new Igra(igra);
-			kopijaIgre.odigraj(p);
+			int x = p.getX();
+			int y = p.getY();
+			if(kopijaIgre.naPotezi == Igralec.rdeci) {
+				kopijaIgre.getPlosca()[x][y] = Polje.rdece;
+			}
+			else {kopijaIgre.getPlosca()[x][y] = Polje.modro;}
 			
 			int ocenap;
 			
