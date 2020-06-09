@@ -25,29 +25,19 @@ public class MiniMax extends Inteligenca {
 	// izbere najboljso potezo
 	public Koordinati izberiPotezo (Igra igra) {
 		
-		boolean prazen = true;
-
-		for (int i=0;i<Plosca.N;i++) {
-			for (int j=0; j<Plosca.N;j++) {
-				if (igra.plosca.plosca[i][j]!=Polje.prazno) {
-					prazen = false;
-				}
-			}
-		}
-		if (prazen) {
+		// zacto potezo odgramo na sredino 
+		if (igra.odigranePoteze.size() == 0) {
 			if(Plosca.N%2==0) {
 				Koordinati p = new Koordinati((Plosca.N-2)/2,(Plosca.N-2)/2);
-				prazen = true;
 				return p;
 			}
 			else{
 				Koordinati p = new Koordinati((Plosca.N-1)/2,(Plosca.N-1)/2);
-				prazen = true;
 				return p;
 			}
 		}
+		// ostale poeze odigramo z alphabeta
 		else {
-	
 			return alphabetaPoteze(igra, this.globina, ZGUBA, ZMAGA, igra.naPotezi()).poteza;
 		}
 	}
@@ -77,6 +67,7 @@ public class MiniMax extends Inteligenca {
 			
 			int ocenap;
 			
+			// dobimo oceno poteze
 			switch (kopijaIgre.stanje()) {
 			case zmaga_rdeci: ocenap = (jaz == Igralec.rdeci ? ZMAGA : ZGUBA); break;
 			case zmaga_modri: ocenap = (jaz == Igralec.modri ? ZMAGA : ZGUBA); break;
@@ -86,7 +77,7 @@ public class MiniMax extends Inteligenca {
 				else ocenap = alphabetaPoteze (kopijaIgre, globina-1, alpha, beta, jaz).ocena;
 			}
 			
-
+			// dolocimo alpha
 			if (igra.naPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
 					ocena = ocenap;
@@ -94,6 +85,8 @@ public class MiniMax extends Inteligenca {
 					alpha = Math.max(alpha,ocena);
 				}
 			}
+			
+			// dolocimo beta
 			else { // igra.naPotezi() != jaz, torej minimiziramo oceno
 				if (ocenap < ocena) { // mora biti < namesto <=
 					ocena = ocenap;
