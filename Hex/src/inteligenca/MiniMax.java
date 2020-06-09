@@ -42,12 +42,7 @@ public class MiniMax extends Inteligenca {
 		
 		for (Koordinati p: moznePoteze) {
 			Igra kopijaIgre = new Igra(igra);
-			if (jaz == Igralec.rdeci) {
-				kopijaIgre.plosca.plosca[p.getX()][p.getY()]=Polje.rdece;
-			}
-			else {
-				kopijaIgre.plosca.plosca[p.getX()][p.getY()]=Polje.modro;
-			}
+			kopijaIgre.plosca.plosca[p.getX()][p.getY()]=Polje.rdece;
 			int ocenap;
 			
 			switch (kopijaIgre.stanje()) {
@@ -64,7 +59,7 @@ public class MiniMax extends Inteligenca {
 				if (ocenap > ocena) { // mora biti > namesto >=
 					ocena = ocenap;
 					kandidat = p;
-					alpha = Math.max(alpha, ocena);
+					alpha = Math.max(alpha,ocena);
 				}
 			}
 			else { // igra.naPotezi() != jaz, torej minimiziramo oceno
@@ -76,6 +71,7 @@ public class MiniMax extends Inteligenca {
 			}
 			if (alpha >= beta) // Izstopimo iz "for loop", saj ostale poteze ne pomagajo
 				return new OcenjenaPoteza (kandidat, ocena);
+
 		}
 		return new OcenjenaPoteza (kandidat, ocena);
 		
